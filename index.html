@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="yo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ỌBỌỌGUN GLOBAL FAMILY CONNECT - TikTok Pro Social & Meeting Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes rotateLogo {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .rotating-logo {
+            animation: rotateLogo 10s linear infinite;
+        }
+        .tiktok-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: calc(100vh - 150px);
+        }
+        .tiktok-slide {
+            scroll-snap-align: start;
+            height: calc(100vh - 150px);
+            position: relative;
+            flex-shrink: 0;
+        }
+        .banner-ad-bar {
+            position: fixed;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            height: 35px;
+            background: linear-gradient(90deg, #d97706, #b45309);
+            color: black;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 60;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-sans antialiased overflow-hidden">
+
+    <!-- WELCOME / AUTH PAGE -->
+    <div id="authPage" class="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-b from-purple-950 via-gray-900 to-black z-50 absolute inset-0 overflow-y-auto">
+        <div class="text-center my-4">
+            <div class="w-20 h-20 mx-auto mb-3 bg-yellow-500 rounded-full flex items-center justify-center shadow-lg shadow-yellow-500/50 rotating-logo">
+                <span class="text-black font-extrabold text-xl">ỌBỌỌGUN</span>
+            </div>
+            <h1 class="text-xl font-bold tracking-wider text-yellow-400">ỌBỌỌGUN GLOBAL FAMILY CONNECT</h1>
+            <p class="text-gray-400 text-xs mt-1">Agbaye lo wa, a jẹ mọlẹbi kanṣoṣo & Ifẹ Ẹbi!</p>
+        </div>
+
+        <div class="w-full max-w-md bg-gray-900/95 backdrop-blur-md p-5 rounded-2xl shadow-2xl border border-gray-800 mb-6">
+            <div class="flex mb-4 border-b border-gray-800 pb-2">
+                <button type="button" onclick="switchTab('signin')" id="tabSignin" class="flex-1 pb-2 font-bold text-yellow-400 border-b-2 border-yellow-400 transition cursor-pointer text-xs">Wọle (Sign In)</button>
+                <button type="button" onclick="switchTab('create')" id="tabCreate" class="flex-1 pb-2 font-semibold text-gray-400 transition cursor-pointer text-xs">Mọlẹbi Reg</button>
+                <button type="button" onclick="switchTab('wifeCreate')" id="tabWifeCreate" class="flex-1 pb-2 font-semibold text-gray-400 transition cursor-pointer text-xs">Iyawo Ile Reg</button>
+            </div>
+
+            <!-- SIGN IN FORM -->
+            <form id="formSignin" onsubmit="handleLogin(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Orukọ ni kikun tabi Nomba Foonu</label>
+                    <input type="text" id="signinUserIdentifier" value="Timothy Adewale" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2.5 text-white text-xs focus:outline-none focus:border-yellow-400">
+                </div>
+                <div class="relative">
+                    <label class="block text-xs text-gray-400 mb-1">Ọrọ Aṣínà (Password)</label>
+                    <input type="password" id="signinPassword" value="12345" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2.5 text-white text-xs focus:outline-none focus:border-yellow-400 pr-10">
+                    <button type="button" onclick="togglePasswordVisibility('signinPassword', this)" class="absolute right-3 top-7 text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-eye"></i></button>
+                </div>
+                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-2.5 rounded-lg transition shadow-lg cursor-pointer text-xs">Wọle si App Na</button>
+            </form>
+
+            <!-- REGISTRATION FORM FOR GENERAL MEMBERS -->
+            <form id="formCreate" onsubmit="handleRegistrationWithAds(event, 'member')" class="space-y-3 hidden max-h-[50vh] overflow-y-auto pr-1">
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Full Name (Orukọ ni kikun)</label>
+                    <input type="text" id="signupFullName" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] text-gray-400 mb-1">Age (Ọjọ Ori)</label>
+                        <input type="number" id="signupAge" placeholder="Apẹrẹ: 35" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-gray-400 mb-1">Phone Number</label>
+                        <input type="tel" id="signupPhone" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] text-gray-400 mb-1">Ilu (City)</label>
+                        <input type="text" id="signupCity" placeholder="Imeko" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-gray-400 mb-1">Ipinlẹ (State)</label>
+                        <input type="text" id="signupState" placeholder="Ogun" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Address Ni Kikun</label>
+                    <input type="text" id="signupAddress" placeholder="Owode" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                </div>
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Orukọ Iya tabi Baba (Parent Name)</label>
+                    <input type="text" id="signupParent" placeholder="Omo..." required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                </div>
+                <div class="relative">
+                    <label class="block text-[10px] text-gray-400 mb-1">Create Password</label>
+                    <input type="password" id="signupPassword" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs pr-10">
+                    <button type="button" onclick="togglePasswordVisibility('signupPassword', this)" class="absolute right-3 top-6 text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-eye"></i></button>
+                </div>
+                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-2.5 rounded-lg transition shadow-lg mt-2 cursor-pointer text-xs">SẸDA ACCOUNT MI</button>
+            </form>
+
+            <!-- REGISTRATION FORM FOR IYAWO ILE -->
+            <form id="formWifeCreate" onsubmit="handleRegistrationWithAds(event, 'wife')" class="space-y-3 hidden max-h-[50vh] overflow-y-auto pr-1">
+                <div class="bg-yellow-500/10 border border-yellow-500/40 p-2 rounded-lg text-center">
+                    <span class="text-[10px] text-yellow-400 font-bold block">Iforukọsilẹ Awọn Iyawo Ile Idile Ọbọọgun 👑</span>
+                </div>
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Orukọ ni kikun (Full Name)</label>
+                    <input type="text" id="wifeFullName" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                </div>
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Orukọ Ọkọ rẹ tio jẹ ọmọ agbo idile Ọbọọgun</label>
+                    <input type="text" id="wifeHusbandName" placeholder="Ọkọ mi..." required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                </div>
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Orukọ Ọmọ rẹ ti wọn fin pe e (Child / Pet Name)</label>
+                    <input type="text" id="wifeChildName" placeholder="Mummy..." required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                </div>
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Phone Number</label>
+                    <input type="tel" id="wifePhone" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs">
+                </div>
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Live Passport Camera (2x2 Frame Engine)</label>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="openWifeCameraModal()" class="bg-yellow-500 text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer"><i class="fa-solid fa-camera mr-1"></i> Ya Live Passport</button>
+                        <span id="wifePassportStatus" class="text-[10px] text-gray-400">Ko tii ya fọto</span>
+                    </div>
+                </div>
+                <div class="relative">
+                    <label class="block text-[10px] text-gray-400 mb-1">Password</label>
+                    <input type="password" id="wifePassword" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white text-xs pr-10">
+                    <button type="button" onclick="togglePasswordVisibility('wifePassword', this)" class="absolute right-3 top-6 text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-eye"></i></button>
+                </div>
+                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-2.5 rounded-lg transition shadow-lg mt-2 cursor-pointer text-xs">SẸDA ACCOUNT MI</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- LIVE CAMERA MODAL FOR IYAWO ILE PASSPORT -->
+    <div id="wifeCameraModal" class="hidden absolute inset-0 bg-black/95 z-[130] flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-yellow-500 w-full max-w-sm p-4 rounded-2xl shadow-2xl space-y-3 text-center">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                <h3 class="text-yellow-400 font-bold text-xs">Live Passport Camera 2x2 Frame</h3>
+                <button type="button" onclick="closeWifeCameraModal()" class="text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-base"></i></button>
+            </div>
+            <div class="w-48 h-48 mx-auto bg-black rounded-xl overflow-hidden border-2 border-yellow-500 relative flex items-center justify-center">
+                <video id="wifeVideoElem" autoplay playsinline class="w-full h-full object-cover"></video>
+                <div class="absolute inset-4 border border-dashed border-yellow-400/60 pointer-events-none rounded-lg"></div>
+            </div>
+            <canvas id="wifeCanvasElem" class="hidden"></canvas>
+            <div class="flex gap-2">
+                <button type="button" onclick="startWifeCamera()" class="flex-1 bg-gray-800 text-xs text-yellow-300 py-2 rounded cursor-pointer">Tan Kamẹra</button>
+                <button type="button" onclick="captureWifePassport()" class="flex-1 bg-yellow-500 text-black font-bold text-xs py-2 rounded cursor-pointer">Ya Passport</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIDEO AD MODAL FOR 3 ADS SEQUENCE & 10-POST FYP AD -->
+    <div id="regAdsModal" class="hidden absolute inset-0 bg-black z-[100] flex flex-col items-center justify-center p-6 text-center">
+        <div class="w-full max-w-sm bg-gray-900 border border-yellow-500 p-5 rounded-2xl shadow-2xl space-y-4">
+            <span class="bg-yellow-500 text-black text-[10px] font-bold px-2.5 py-1 rounded-full uppercase" id="adModalTitle">Ipolowo Iforukọsilẹ (<span id="adStepIndicator">1</span>/3)</span>
+            <div id="regAdVideoContainer" class="w-full h-48 bg-black rounded-lg overflow-hidden flex items-center justify-center border border-gray-800">
+                <div id="regAdPlaceholder" class="text-yellow-400 font-bold text-sm p-4">"First Crown Wood & Paint - Igi ati Kun ti o dara julọ!"</div>
+            </div>
+            <p id="regAdTimerText" class="text-xs text-gray-300 font-semibold">Ipolowo nṣiṣẹ lọwọ... Jọwọ duro.</p>
+            <button type="button" id="nextAdBtn" disabled class="w-full bg-gray-700 text-gray-400 font-bold p-2.5 rounded-lg text-xs cursor-not-allowed">Jọwọ Duro...</button>
+        </div>
+    </div>
+
+    <!-- STICKER EDIT MODAL FOR GREETINGS -->
+    <div id="stickerEditModal" class="hidden absolute inset-0 bg-black/90 z-[110] flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-yellow-500 w-full max-w-sm p-5 rounded-2xl shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                <h3 id="stickerEditTitle" class="text-yellow-400 font-bold text-sm">Edit Ọrọ Ikini</h3>
+                <button type="button" onclick="closeStickerEditModal()" class="text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">Ṣe Edit ọrọ ti o fẹ kọ pẹlu sticker yii:</label>
+                <textarea id="stickerEditTextArea" rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs text-white"></textarea>
+            </div>
+            <button type="button" onclick="sendEditedStickerMessage()" class="w-full bg-yellow-500 text-black font-bold py-2.5 rounded text-xs cursor-pointer shadow">Fi Ranṣẹ si Chat</button>
+        </div>
+    </div>
+
+    <!-- SHARE OPTIONS MODAL -->
+    <div id="shareModal" class="hidden absolute inset-0 bg-black/90 z-[120] flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-yellow-500 w-full max-w-sm p-5 rounded-2xl shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                <h3 class="text-yellow-400 font-bold text-sm">Pin Fidio / Aworan (Share)</h3>
+                <button type="button" onclick="closeShareModal()" class="text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <button type="button" onclick="shareToSocialMedia()" class="w-full bg-blue-600 text-white font-bold py-2.5 rounded-lg flex items-center justify-center gap-2 cursor-pointer"><i class="fa-solid fa-share-nodes"></i> Pin si Social Media Platform</button>
+                <div class="border-t border-gray-800 pt-2">
+                    <span class="text-yellow-400 font-bold block mb-1">Fi ranṣẹ si Mọlẹbi Ẹbi Gangan:</span>
+                    <div id="shareFamilyMembersList" class="max-h-[150px] overflow-y-auto space-y-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="mainApp" class="hidden h-screen w-full flex flex-col relative bg-black overflow-hidden">
+        
+        <div class="absolute top-0 left-0 right-0 p-4 flex justify-between items-center z-40 bg-gradient-to-b from-black/90 to-transparent">
+            <h2 class="text-yellow-400 font-extrabold tracking-wider text-sm truncate max-w-[200px]">GLOBAL CONNECT</h2>
+            
+            <div class="relative">
+                <button type="button" onclick="toggleDropdown()" class="bg-gray-800/80 border border-gray-700 p-2.5 rounded-full text-yellow-400 hover:bg-gray-700 transition shadow cursor-pointer">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+                
+                <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-64 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl overflow-hidden z-50 text-xs">
+                    <a href="#" onclick="openDashboard('meetingRoom')" class="block px-4 py-3 hover:bg-gray-800 border-b border-gray-800 text-yellow-300 font-medium"><i class="fa-solid fa-video mr-2"></i> Family Meeting Room</a>
+                    <a href="#" onclick="openDashboard('myDashboard')" class="block px-4 py-3 hover:bg-gray-800 border-b border-gray-800 text-gray-200"><i class="fa-solid fa-user-gear mr-2"></i> My Dashboard & History</a>
+                    <a href="#" onclick="openDashboard('controlCenter')" class="block px-4 py-3 hover:bg-gray-800 text-gray-200"><i class="fa-solid fa-shield-halved mr-2"></i> Control Center & Oloye</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- FYP FEED -->
+        <div id="fypScreen" class="flex-1 tiktok-container bg-black" onscroll="handleFypScroll()">
+            <div id="fypFeedContainer" class="flex flex-col h-full"></div>
+        </div>
+
+        <!-- COMMENT MODAL -->
+        <div id="commentModal" class="hidden absolute inset-0 bg-black/80 z-50 flex flex-col justify-end">
+            <div class="bg-gray-900 border-t border-gray-700 w-full max-h-[70vh] rounded-t-3xl p-5 flex flex-col shadow-2xl">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-3">
+                    <h3 class="text-yellow-400 font-bold text-sm"><i class="fa-solid fa-comments mr-1"></i> Awọn Asọye (Comments)</h3>
+                    <button type="button" onclick="closeCommentModal()" class="text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div id="commentsListContainer" class="flex-1 overflow-y-auto space-y-3 mb-3 pr-1 text-xs">
+                    <p class="text-gray-400 text-center">Ko tii si asọye kankan.</p>
+                </div>
+                <div class="flex items-center space-x-2 pt-2 border-t border-gray-800">
+                    <input type="text" id="commentInputText" placeholder="Kọ asọye rẹ..." class="flex-1 bg-gray-800 border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-yellow-400">
+                    <button type="button" onclick="sendComment()" class="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2.5 rounded-lg text-xs font-bold shadow cursor-pointer"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- USER PROFILE DASHBOARD (FYP CLICK) -->
+        <div id="userProfileDashboard" class="hidden absolute inset-0 bg-gray-950 z-40 flex flex-col pt-16 p-4 overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="closeUserProfileDashboard()" class="bg-gray-800 px-3 py-1.5 rounded-lg text-xs text-gray-300 cursor-pointer"><i class="fa-solid fa-arrow-left mr-1"></i> Pada</button>
+                    <h2 id="profileDashboardTitle" class="text-yellow-400 font-bold text-base">Profaili Mọlẹbi</h2>
+                </div>
+                <button type="button" onclick="openWhatsappChatFromProfile()" class="bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer shadow"><i class="fa-brands fa-whatsapp mr-1"></i> DM Chat</button>
+            </div>
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl flex items-center space-x-4">
+                <div id="profileAvatarBig" class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center text-black font-bold text-2xl">O</div>
+                <div>
+                    <h3 id="profileUsernameDisplay" class="font-bold text-white text-base">Oluwa</h3>
+                    <p class="text-xs text-gray-400">Mọlẹbi Idile Ọbọọgun</p>
+                </div>
+            </div>
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl flex-1 space-y-3">
+                <h3 class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-photo-film mr-1"></i> Gbogbo Fidio & Aworan Ti Olumulo Yi Gbe Wọle</h3>
+                <div id="userProfilePostsContainer" class="space-y-3 max-h-[300px] overflow-y-auto pr-1">
+                    <p class="text-xs text-gray-400 text-center">Ko tii si igbasilẹ kankan.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAMILY MEETING ROOM DASHBOARD -->
+        <div id="meetingRoom" class="hidden absolute inset-0 bg-gray-950 z-30 flex flex-col pt-16 p-4 overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                <h2 class="text-yellow-400 font-bold text-base"><i class="fa-solid fa-video mr-1"></i> Family Meeting Room</h2>
+                
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="closeDashboards()" class="bg-gray-800 px-3 py-1 rounded-lg text-xs text-gray-300 cursor-pointer"><i class="fa-solid fa-arrow-left mr-1"></i> Pada</button>
+                    <div class="relative">
+                        <button type="button" onclick="toggleMeetingDropdown()" class="bg-yellow-500 text-black px-3 py-1.5 rounded-lg text-xs font-bold shadow cursor-pointer flex items-center">
+                            <i class="fa-solid fa-bars mr-1"></i> Engine Ledgers <i class="fa-solid fa-chevron-down ml-1"></i>
+                        </button>
+                        <div id="meetingDropdownMenu" class="hidden absolute right-0 mt-2 w-56 bg-gray-900 border border-yellow-500/50 rounded-xl shadow-2xl overflow-hidden z-50 text-xs">
+                            <a href="#" onclick="openEngineLedgerModal(1)" id="dropdownBtnE1" class="block px-4 py-2.5 hover:bg-gray-800 border-b border-gray-800 text-yellow-300 font-bold"><i class="fa-solid fa-wallet mr-1.5"></i> Engine 1 Ledger</a>
+                            <a href="#" onclick="openEngineLedgerModal(2)" id="dropdownBtnE2" class="block px-4 py-2.5 hover:bg-gray-800 border-b border-gray-800 text-yellow-300 font-bold"><i class="fa-solid fa-wallet mr-1.5"></i> Engine 2 Ledger</a>
+                            <a href="#" onclick="openEngineLedgerModal(3)" id="dropdownBtnE3" class="block px-4 py-2.5 hover:bg-gray-800 text-yellow-300 font-bold"><i class="fa-solid fa-file-invoice-dollar mr-1.5"></i> Engine 3 Minute Ledger</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-900 border border-yellow-500 p-4 rounded-xl space-y-3">
+                <h3 class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-music mr-1"></i> Gbe Orin/Ohun wọle si Meeting Room (Play & Stop)</h3>
+                <div class="space-y-2">
+                    <input type="file" id="meetingAudioInput" accept="audio/*" class="w-full text-xs text-gray-300 file:mr-2 file:py-2 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-yellow-500 file:text-black cursor-pointer" onchange="loadMeetingAudio(event)">
+                    <audio id="meetingAudioPlayer" controls class="w-full h-8 hidden"></audio>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="playMeetingAudio()" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded text-xs cursor-pointer"><i class="fa-solid fa-play mr-1"></i> Play Orin</button>
+                        <button type="button" onclick="stopMeetingAudio()" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-2 rounded text-xs cursor-pointer"><i class="fa-solid fa-stop mr-1"></i> Stop Orin</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+                <button type="button" onclick="startMeetingSession()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center justify-center">
+                    <i class="fa-solid fa-play-circle mr-1.5"></i> Bẹrẹ Meeting
+                </button>
+                <button type="button" onclick="stopMeetingSession()" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center justify-center">
+                    <i class="fa-solid fa-stop-circle mr-1.5"></i> Dá Meeting Duro
+                </button>
+            </div>
+            <div id="meetingStatusText" class="text-center text-[11px] text-gray-400">Ipade ko tii bẹrẹ. Tẹ bọtini lati bẹrẹ.</div>
+
+            <div class="bg-gray-900 border border-yellow-500/60 p-4 rounded-xl space-y-3">
+                <h3 class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-receipt mr-1"></i> Firanṣẹ Iwe-ẹri Isanwo (Submit Payment Receipt)</h3>
+                <div class="space-y-2">
+                    <select id="memberTargetEngine" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-xs text-white">
+                        <option value="1" id="optE1">Engine 1 (Ajọ Pataki)</option>
+                        <option value="2" id="optE2">Engine 2 (Ajọ Ẹlẹkeji)</option>
+                        <option value="3" id="optE3">Engine 3 (Meeting Minute)</option>
+                    </select>
+                    <input type="number" id="memberPaidAmount" placeholder="Iye Owo Ti O San (e.g. 5000)" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-xs text-white">
+                    <input type="text" id="memberTransactionId" placeholder="Transaction ID (e.g. TXN-984321)" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-xs text-white">
+                    <div class="flex gap-2">
+                        <button type="button" onclick="openLiveCameraModal()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 rounded text-xs cursor-pointer"><i class="fa-solid fa-camera mr-1"></i> Live Camera</button>
+                        <label class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded text-xs cursor-pointer text-center">
+                            <i class="fa-solid fa-upload mr-1"></i> Upload <input type="file" id="receiptUploadInput" accept="image/*" class="hidden" onchange="handleReceiptUpload(event)">
+                        </label>
+                    </div>
+                    <button type="button" onclick="previewReceiptImage()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded text-xs cursor-pointer shadow"><i class="fa-solid fa-eye mr-1"></i> Preview Ẹri Isanwo</button>
+                    
+                    <button type="button" onclick="verifyAndSubmitReceipt()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded text-xs cursor-pointer shadow"><i class="fa-solid fa-shield-check mr-1"></i> Verify & Submit to Engine Ledger</button>
+                    <div id="receiptStatusMsg" class="text-[11px] text-center text-gray-400">Ko tii gbe iwe-ẹri kankan wọle.</div>
+                </div>
+            </div>
+
+            <div id="engineContainerWrapper" class="bg-gray-900 border border-yellow-500/40 p-4 rounded-xl space-y-3">
+                <h3 class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-microphone-lines mr-1"></i> Meeting Recording Engine</h3>
+                <div id="recordingLiveStatus" class="text-xs text-red-400 font-semibold">Ipò Igbaṣẹ: Duro (Not Recording)</div>
+                <audio id="liveMeetingAudioPreview" controls class="w-full h-8 hidden"></audio>
+
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button type="button" onclick="startRecordMeeting()" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-2 rounded-lg text-[11px] cursor-pointer shadow">1. START RECORD</button>
+                    <button type="button" onclick="stopRecordMeeting()" class="bg-gray-800 hover:bg-gray-700 text-yellow-300 font-bold py-2 px-2 rounded-lg text-[11px] cursor-pointer border border-gray-700">2. STOP RECORDING</button>
+                    <button type="button" onclick="playPauseMeetingAudio()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-2 rounded-lg text-[11px] cursor-pointer shadow">3. PLAY / PAUSE</button>
+                    <button type="button" onclick="stopPlayMeetingAudio()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-2 px-2 rounded-lg text-[11px] cursor-pointer border border-gray-700">4. STOP PLAY</button>
+                    <button type="button" onclick="sendRecordingToFyp()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-2 rounded-lg text-[11px] cursor-pointer shadow">5. SEND TO FYP</button>
+                    <button type="button" onclick="saveToSecretaryBag()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-2 rounded-lg text-[11px] cursor-pointer shadow">6. SAVE TO SECRETARY BAG</button>
+                </div>
+            </div>
+
+            <div class="bg-gray-900 border border-yellow-500/50 p-4 rounded-xl space-y-3">
+                <h3 class="text-xs font-bold text-yellow-400 text-center"><i class="fa-solid fa-users-rectangle mr-1"></i> Awọn Oloye & Agbàgbà Ti A Yan</h3>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-black/50 p-2 rounded-lg border border-gray-800"><span class="text-[10px] text-yellow-400 font-bold block">Chairman:</span><span id="displayChairman" class="text-white font-semibold">Ko tii si</span></div>
+                    <div class="bg-black/50 p-2 rounded-lg border border-gray-800"><span class="text-[10px] text-yellow-400 font-bold block">Igbakeji (Deputy):</span><span id="displayDeputy" class="text-white font-semibold">Ko tii si</span></div>
+                    <div class="bg-black/50 p-2 rounded-lg border border-gray-800"><span class="text-[10px] text-yellow-400 font-bold block">Akọwe:</span><span id="displaySecretary" class="text-white font-semibold">Ko tii si</span></div>
+                    <div class="bg-black/50 p-2 rounded-lg border border-gray-800"><span class="text-[10px] text-yellow-400 font-bold block">Akapo:</span><span id="displayTreasurer" class="text-white font-semibold">Ko tii si</span></div>
+                    <div class="bg-black/50 p-2 rounded-lg border border-gray-800"><span class="text-[10px] text-yellow-400 font-bold block">Alukoro:</span><span id="displayPublicist" class="text-white font-semibold">Ko tii si</span></div>
+                </div>
+                <div class="bg-black/60 p-2.5 rounded-lg border border-gray-800 text-center">
+                    <span class="text-[10px] text-yellow-400 font-bold block mb-1">Agbàgbà Ẹbi:</span>
+                    <div id="displayEldersList" class="text-[11px] text-gray-200">Ko tii si agbàgbà ti a yan.</div>
+                </div>
+            </div>
+
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl space-y-3">
+                <h3 class="text-xs font-bold text-yellow-400 text-center"><i class="fa-solid fa-users mr-1"></i> Akojọ Gbogbo Mọlẹbi (Family Members Directory)</h3>
+                <div id="meetingMembersDirectoryList" class="space-y-2 max-h-[160px] overflow-y-auto pr-1 text-xs"></div>
+            </div>
+
+            <div class="bg-gray-900 border border-yellow-500/50 p-4 rounded-xl flex flex-col items-center justify-center space-y-3">
+                <span class="text-[11px] text-yellow-400 font-bold"><i class="fa-solid fa-microphone-lines mr-1"></i> Ẹni Ton Sọrọ Lọwọlọwọ (Active Speakers)</span>
+                <div id="activeSpeakersRoundContainer" class="flex justify-center items-center gap-4 py-2"></div>
+            </div>
+
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl space-y-3">
+                <h3 class="text-xs font-bold text-yellow-400 text-center">Iṣakoso Mic & Awọn Bọtini Pataki</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="toggleMyMic()" id="myMicToggleBtn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-lg text-xs cursor-pointer shadow"><i class="fa-solid fa-microphone mr-1"></i> Pa Mic</button>
+                    <button type="button" onclick="toggleRaiseHand()" id="raiseHandBtn" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 rounded-lg text-xs cursor-pointer shadow"><i class="fa-solid fa-hand mr-1"></i> Nawọ Soke</button>
+                </div>
+            </div>
+            
+            <button type="button" onclick="closeDashboards()" class="w-full bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs cursor-pointer mt-2"><i class="fa-solid fa-house mr-1"></i> Pada si FYP Home</button>
+        </div>
+
+        <!-- CONTROL CENTER & FINANCIAL ENGINES -->
+        <div id="controlCenter" class="hidden absolute inset-0 bg-gray-950 z-30 flex flex-col pt-16 p-4 overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center mb-2 border-b border-gray-800 pb-2">
+                <h2 class="text-yellow-400 font-bold text-base"><i class="fa-solid fa-shield-halved mr-1"></i> Control Center & Oloye</h2>
+                
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="closeDashboards()" class="bg-gray-800 px-3 py-1 rounded-lg text-xs text-gray-300 cursor-pointer"><i class="fa-solid fa-arrow-left mr-1"></i> Pada</button>
+                    <div class="relative">
+                        <button type="button" onclick="toggleControlDropdown()" class="bg-yellow-500 text-black px-3 py-1.5 rounded-lg text-xs font-bold shadow cursor-pointer flex items-center">
+                            <i class="fa-solid fa-bars mr-1"></i> Control Menu <i class="fa-solid fa-chevron-down ml-1"></i>
+                        </button>
+                        <div id="controlDropdownMenu" class="hidden absolute right-0 mt-2 w-56 bg-gray-900 border border-yellow-500/50 rounded-xl shadow-2xl overflow-hidden z-50 text-xs">
+                            <a href="#" onclick="scrollToSection('engine1Section')" class="block px-4 py-2.5 hover:bg-gray-800 border-b border-gray-800 text-yellow-300 font-bold"><i class="fa-solid fa-cogs mr-1.5"></i> Engine 1</a>
+                            <a href="#" onclick="scrollToSection('engine2Section')" class="block px-4 py-2.5 hover:bg-gray-800 border-b border-gray-800 text-yellow-300 font-bold"><i class="fa-solid fa-cogs mr-1.5"></i> Engine 2</a>
+                            <a href="#" onclick="scrollToSection('engine3Section')" class="block px-4 py-2.5 hover:bg-gray-800 border-b border-gray-800 text-yellow-300 font-bold"><i class="fa-solid fa-file-invoice-dollar mr-1.5"></i> Engine 3 Minute</a>
+                            <a href="#" onclick="scrollToSection('officialsSection')" class="block px-4 py-2.5 hover:bg-gray-800 border-b border-gray-800 text-yellow-300 font-bold"><i class="fa-solid fa-crown mr-1.5"></i> Yiyan Awọn Oloye</a>
+                            <a href="#" onclick="scrollToSection('bagSection')" class="block px-4 py-2.5 hover:bg-gray-800 text-yellow-300 font-bold"><i class="fa-solid fa-bag-shopping mr-1.5"></i> Bag Akọwe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ENGINE 1 -->
+            <div id="engine1Section" class="bg-gray-900 border border-yellow-500 p-4 rounded-xl shadow-xl space-y-3">
+                <div onclick="toggleEngineCard(1)" class="flex justify-between items-center cursor-pointer select-none">
+                    <h3 id="engine1HeaderBtn" class="text-xs font-bold text-yellow-400 flex items-center"><i class="fa-solid fa-cogs mr-1.5"></i> 1. Engine 1 (Ajọ Pataki)</h3>
+                    <span id="engine1Icon" class="text-yellow-400 text-xs font-bold"><i class="fa-solid fa-chevron-up"></i> (Paramọ)</span>
+                </div>
+                <div id="engine1Content" class="space-y-2 text-xs">
+                    <div><label class="block text-[10px] text-gray-400 mb-0.5">Orukọ Ajọ:</label><input type="text" id="e1Name" value="Ajọ Idile Ọbọọgun 1" oninput="updateEngineDisplayNames()" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    <div><label class="block text-[10px] text-gray-400 mb-0.5">Iye Owo Ti A Fẹ Da:</label><input type="number" id="e1Target" value="5000" oninput="updateEngineDisplayNames()" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="block text-[10px] text-gray-400 mb-0.5">Bank Account Number:</label><input type="text" id="e1Acct" placeholder="0123456789" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                        <div><label class="block text-[10px] text-gray-400 mb-0.5">Bank Name:</label><input type="text" id="e1Bank" placeholder="Access Bank" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    </div>
+                    <div><label class="block text-[10px] text-gray-400 mb-0.5">Ọrọ Idupẹ:</label><input type="text" id="e1Thanks" value="Ẹ se pupọ moju rere fun isanwo ajọ rẹ!" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    <div class="bg-black/50 p-2.5 rounded border border-gray-800 flex justify-between items-center">
+                        <span class="text-yellow-400 font-bold">Apapọ Owo Tio Wọle:</span>
+                        <span id="e1Total" class="text-white font-extrabold text-sm">₦0</span>
+                    </div>
+                    <button type="button" onclick="openEngineLedgerModal(1)" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded shadow cursor-pointer">Ṣii Ledger Engine 1</button>
+                    <div class="flex gap-2 pt-1">
+                        <button type="button" onclick="resetEngine(1)" class="flex-1 bg-red-600 text-white font-bold py-1.5 rounded cursor-pointer">Fopin Si Ajọ</button>
+                        <button type="button" onclick="restartEngine(1)" class="flex-1 bg-green-600 text-white font-bold py-1.5 rounded cursor-pointer">Bẹrẹ Sà Tuntun</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ENGINE 2 -->
+            <div id="engine2Section" class="bg-gray-900 border border-yellow-500 p-4 rounded-xl shadow-xl space-y-3">
+                <div onclick="toggleEngineCard(2)" class="flex justify-between items-center cursor-pointer select-none">
+                    <h3 id="engine2HeaderBtn" class="text-xs font-bold text-yellow-400 flex items-center"><i class="fa-solid fa-cogs mr-1.5"></i> 2. Engine 2 (Ajọ Ẹlẹkeji)</h3>
+                    <span id="engine2Icon" class="text-yellow-400 text-xs font-bold"><i class="fa-solid fa-chevron-up"></i> (Paramọ)</span>
+                </div>
+                <div id="engine2Content" class="space-y-2 text-xs">
+                    <div><label class="block text-[10px] text-gray-400 mb-0.5">Orukọ Ajọ:</label><input type="text" id="e2Name" value="Ajọ Idile Ọbọọgun 2" oninput="updateEngineDisplayNames()" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    <div><label class="block text-[10px] text-gray-400 mb-0.5">Iye Owo Ti A Fẹ Da:</label><input type="number" id="e2Target" value="10000" oninput="updateEngineDisplayNames()" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="block text-[10px] text-gray-400 mb-0.5">Bank Account Number:</label><input type="text" id="e2Acct" placeholder="0123456789" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                        <div><label class="block text-[10px] text-gray-400 mb-0.5">Bank Name:</label><input type="text" id="e2Bank" placeholder="First Bank" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    </div>
+                    <div><label class="block text-[10px] text-gray-400 mb-0.5">Ọrọ Idupẹ:</label><input type="text" id="e2Thanks" value="A dupẹ lọwọ rẹ fun isanwo ajọ keji!" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    <div class="bg-black/50 p-2.5 rounded border border-gray-800 flex justify-between items-center">
+                        <span class="text-yellow-400 font-bold">Apapọ Owo Tio Wọle:</span>
+                        <span id="e2Total" class="text-white font-extrabold text-sm">₦0</span>
+                    </div>
+                    <button type="button" onclick="openEngineLedgerModal(2)" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded shadow cursor-pointer">Ṣii Ledger Engine 2</button>
+                    <div class="flex gap-2 pt-1">
+                        <button type="button" onclick="resetEngine(2)" class="flex-1 bg-red-600 text-white font-bold py-1.5 rounded cursor-pointer">Fopin Si Ajọ</button>
+                        <button type="button" onclick="restartEngine(2)" class="flex-1 bg-green-600 text-white font-bold py-1.5 rounded cursor-pointer">Bẹrẹ Sà Tuntun</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ENGINE 3 -->
+            <div id="engine3Section" class="bg-gray-900 border border-yellow-500 p-4 rounded-xl shadow-xl space-y-3">
+                <div onclick="toggleEngineCard(3)" class="flex justify-between items-center cursor-pointer select-none">
+                    <h3 id="engine3HeaderBtn" class="text-xs font-bold text-yellow-400 flex items-center"><i class="fa-solid fa-file-invoice-dollar mr-1.5"></i> 3. Engine 3 (Meeting Minute & Dues)</h3>
+                    <span id="engine3Icon" class="text-yellow-400 text-xs font-bold"><i class="fa-solid fa-chevron-up"></i> (Paramọ)</span>
+                </div>
+                <div id="engine3Content" class="space-y-2 text-xs">
+                    <div><label class="block text-[10px] text-gray-400 mb-0.5">Meeting Minute Title:</label><input type="text" id="e3Name" value="Ipade Oṣu yii - Ọbọọgun" oninput="updateEngineDisplayNames()" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    <div><label class="block text-[10px] text-gray-400 mb-0.5">Iye Owo Minute:</label><input type="number" id="e3Target" value="2000" oninput="updateEngineDisplayNames()" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="block text-[10px] text-gray-400 mb-0.5">Bank Account Number:</label><input type="text" id="e3Acct" placeholder="0123456789" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                        <div><label class="block text-[10px] text-gray-400 mb-0.5">Bank Name:</label><input type="text" id="e3Bank" placeholder="GTBank" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    </div>
+                    <div><label class="block text-[10px] text-gray-400 mb-0.5">Ọrọ Idupẹ:</label><input type="text" id="e3Thanks" value="A dupẹ fun wiwa si ipade ati sanwo minute." class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"></div>
+                    <div class="bg-black/50 p-2.5 rounded border border-gray-800 space-y-1">
+                        <div class="flex justify-between"><span class="text-gray-400">Apapọ Tio Wọle:</span><span id="e3Total" class="text-white font-bold">₦0</span></div>
+                        <div class="flex justify-between border-t border-gray-800 pt-1"><span class="text-yellow-400 font-bold">Owo To Ku (Balance):</span><span id="e3Balance" class="text-green-400 font-extrabold text-sm">₦0</span></div>
+                    </div>
+                    <button type="button" onclick="openEngineLedgerModal(3)" class="w-full bg-blue-600 text-white font-bold py-2 rounded shadow cursor-pointer">Ledger Engine 3</button>
+                </div>
+            </div>
+
+            <!-- OFFICIALS SECTION -->
+            <div id="officialsSection" class="bg-gray-900 border border-yellow-500/60 p-4 rounded-xl shadow-xl space-y-3 text-xs">
+                <h3 class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-crown mr-1"></i> Yiyan Awọn Oloye & Agbàgbà Ẹbi (Titi di 50)</h3>
+                <div class="space-y-2">
+                    <div>
+                        <label class="block text-[10px] text-gray-400">Alaga (Chairman):</label>
+                        <div class="flex gap-1 mt-1">
+                            <input type="text" id="inputChairman" placeholder="Orukọ Alaga" class="flex-1 bg-gray-800 border border-gray-700 rounded p-1.5 text-white">
+                            <button type="button" onclick="assignOfficial('chairman')" class="bg-yellow-500 text-black font-bold px-3 py-1.5 rounded cursor-pointer">Yan</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-gray-400">Igbakeji Alaga (Deputy Chairman):</label>
+                        <div class="flex gap-1 mt-1">
+                            <input type="text" id="inputDeputy" placeholder="Orukọ Igbakeji" class="flex-1 bg-gray-800 border border-gray-700 rounded p-1.5 text-white">
+                            <button type="button" onclick="assignOfficial('deputy')" class="bg-yellow-500 text-black font-bold px-3 py-1.5 rounded cursor-pointer">Yan</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-gray-400">Akọwe (Secretary):</label>
+                        <div class="flex gap-1 mt-1">
+                            <input type="text" id="inputSecretary" placeholder="Orukọ Akọwe" class="flex-1 bg-gray-800 border border-gray-700 rounded p-1.5 text-white">
+                            <button type="button" onclick="assignOfficial('secretary')" class="bg-yellow-500 text-black font-bold px-3 py-1.5 rounded cursor-pointer">Yan</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-gray-400">Akapo (Treasurer):</label>
+                        <div class="flex gap-1 mt-1">
+                            <input type="text" id="inputTreasurer" placeholder="Orukọ Akapo" class="flex-1 bg-gray-800 border border-gray-700 rounded p-1.5 text-white">
+                            <button type="button" onclick="assignOfficial('treasurer')" class="bg-yellow-500 text-black font-bold px-3 py-1.5 rounded cursor-pointer">Yan</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-gray-400">Alukoro (Publicist):</label>
+                        <div class="flex gap-1 mt-1">
+                            <input type="text" id="inputPublicist" placeholder="Orukọ Alukoro" class="flex-1 bg-gray-800 border border-gray-700 rounded p-1.5 text-white">
+                            <button type="button" onclick="assignOfficial('publicist')" class="bg-yellow-500 text-black font-bold px-3 py-1.5 rounded cursor-pointer">Yan</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-gray-400">Agbàgbà Ẹbi (Elder - Max 50):</label>
+                        <div class="flex gap-1 mt-1">
+                            <input type="text" id="inputElder" placeholder="Orukọ Agbàgbà Tuntun" class="flex-1 bg-gray-800 border border-gray-700 rounded p-1.5 text-white">
+                            <button type="button" onclick="assignOfficial('elder')" class="bg-yellow-500 text-black font-bold px-3 py-1.5 rounded cursor-pointer">Fi Kun</button>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-[10px] text-yellow-400 font-bold block mb-1">Akojọ Awọn Agbàgbà Ti A Ti Yan:</span>
+                        <div id="controlEldersListContainer" class="space-y-2 max-h-[180px] overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bagSection" class="bg-gray-900 border border-yellow-500 p-4 rounded-xl shadow-xl">
+                <div onclick="toggleSecretaryBag()" class="flex justify-between items-center cursor-pointer select-none">
+                    <h3 class="text-xs font-bold text-yellow-400 flex items-center"><i class="fa-solid fa-bag-shopping mr-1.5 text-sm"></i> BAG AKỌWE (Secretary Bag)</h3>
+                    <span id="bagToggleIcon" class="text-yellow-400 text-xs font-bold"><i class="fa-solid fa-chevron-up"></i> (Paramọ)</span>
+                </div>
+                <div id="secretaryBagContent" class="space-y-3 mt-3">
+                    <div id="secretaryBagContainer" class="space-y-3 max-h-[250px] overflow-y-auto pr-1">
+                        <p class="text-xs text-gray-400 text-center">Bag akọwe ko tii ni igbasilẹ kankan.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" onclick="closeDashboards()" class="w-full bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs cursor-pointer mt-2"><i class="fa-solid fa-house mr-1"></i> Pada si FYP Home</button>
+        </div>
+
+        <!-- TIWA NI FAMILY CHAT & CALL HUB -->
+        <div id="chatHubDashboard" class="hidden absolute inset-0 bg-gray-950 z-30 flex flex-col pt-16 p-4 overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                <h2 class="text-yellow-400 font-bold text-base"><i class="fa-brands fa-whatsapp text-green-400 mr-1"></i> TIWA NI Chat & Call Hub</h2>
+                <button type="button" onclick="closeDashboards()" class="bg-gray-800 px-3 py-1 rounded-lg text-xs text-gray-300 cursor-pointer"><i class="fa-solid fa-arrow-left mr-1"></i> Pada</button>
+            </div>
+            
+            <p class="text-xs text-gray-300">Yan mọlẹbi kan lati bẹrẹ ibaraẹnisọrọ gẹgẹ bi iseto WhatsApp:</p>
+            <div id="chatHubMembersList" class="space-y-2"></div>
+        </div>
+
+        <!-- WHATSAPP-STYLE DIRECT CHAT MODAL -->
+        <div id="whatsappChatModal" class="hidden absolute inset-0 bg-gray-950 z-50 flex flex-col justify-between">
+            <div class="bg-gray-900 border-b border-gray-800 p-3 flex items-center justify-between z-10 shadow">
+                <div class="flex items-center space-x-3">
+                    <button type="button" onclick="closeWhatsappChat()" class="text-yellow-400 text-lg cursor-pointer"><i class="fa-solid fa-arrow-left"></i></button>
+                    <div class="relative">
+                        <div id="activeChatAvatar" class="w-10 h-10 bg-yellow-500 text-black font-bold rounded-full flex items-center justify-center text-sm">O</div>
+                        <span id="activeChatOnlineDot" class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-gray-900 rounded-full"></span>
+                    </div>
+                    <div>
+                        <h3 id="activeChatUsername" class="font-bold text-white text-sm">Mọlẹbi</h3>
+                        <p id="activeChatStatus" class="text-[10px] text-green-400">Online</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 text-yellow-400 text-lg">
+                    <button type="button" onclick="startVideoCall()" class="cursor-pointer" title="Video Call"><i class="fa-solid fa-video"></i></button>
+                    <button type="button" onclick="startVoiceCall()" class="cursor-pointer" title="Voice Call"><i class="fa-solid fa-phone"></i></button>
+                </div>
+            </div>
+
+            <div id="whatsappMessagesContainer" class="flex-1 overflow-y-auto p-4 space-y-3 bg-zinc-950 text-xs"></div>
+
+            <div class="bg-gray-900 border-t border-gray-800 p-3 space-y-2">
+                <div id="stickerTray" class="hidden grid grid-cols-5 gap-2 max-h-36 overflow-y-auto bg-gray-950 p-2 rounded-lg border border-gray-800"></div>
+                
+                <div class="flex items-center space-x-2">
+                    <button type="button" onclick="toggleStickerTray()" class="text-yellow-400 text-lg cursor-pointer" title="Stickers"><i class="fa-solid fa-face-smile"></i></button>
+                    <label class="text-yellow-400 text-lg cursor-pointer" title="Upload Media">
+                        <i class="fa-solid fa-paperclip"></i>
+                        <input type="file" id="chatMediaInput" accept="image/*,video/*" class="hidden" onchange="sendChatMedia(event)">
+                    </label>
+                    <input type="text" id="whatsappInputText" placeholder="Kọ ifiranṣẹ..." class="flex-1 bg-gray-800 border border-gray-700 rounded-full px-4 py-2 text-xs text-white focus:outline-none focus:border-yellow-400">
+                    <button type="button" onclick="recordVoiceMessage()" id="micRecordBtn" class="bg-gray-800 text-yellow-400 p-2.5 rounded-full cursor-pointer" title="Voice Record"><i class="fa-solid fa-microphone"></i></button>
+                    <button type="button" onclick="sendWhatsappTextMessage()" class="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2 rounded-full font-bold shadow cursor-pointer"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TIWA NI FAMILY HELP CENTER -->
+        <div id="helpCenterDashboard" class="hidden absolute inset-0 bg-gray-950 z-30 flex flex-col pt-16 p-4 overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                <h2 class="text-yellow-400 font-bold text-base"><i class="fa-solid fa-hands-holding-child mr-1"></i> Family Help Center</h2>
+                <button type="button" onclick="closeDashboards()" class="bg-gray-800 px-3 py-1 rounded-lg text-xs text-gray-300 cursor-pointer"><i class="fa-solid fa-arrow-left mr-1"></i> Pada</button>
+            </div>
+
+            <div class="bg-gray-900 border border-yellow-500/50 p-4 rounded-xl space-y-3">
+                <h3 class="text-xs font-bold text-yellow-400">Beere Fun Iranlọwọ (Request Assistance)</h3>
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Iru Iranlọwọ wo ni o nilo?</label>
+                    <textarea id="helpRequestText" rows="3" placeholder="Kọ alaye iranlọwọ ti o nilo nibi..." class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs text-white"></textarea>
+                </div>
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Yan Awọn Mọlẹbi Ti O Fe Ki Ifiranṣẹ De Ọdọ Wọn:</label>
+                    <div id="helpCenterRecipientsList" class="max-h-[140px] overflow-y-auto space-y-1 bg-black/40 p-2 rounded border border-gray-800 text-xs"></div>
+                </div>
+                <button type="button" onclick="submitHelpRequest()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 rounded text-xs cursor-pointer shadow">Fi Iranlọwọ Rẹ Ranṣẹ (Send Help Request)</button>
+            </div>
+
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl space-y-2">
+                <h3 class="text-xs font-bold text-yellow-400">Itan Awọn Iranlọwọ Ti A Beere</h3>
+                <div id="helpRequestsHistoryList" class="space-y-2 text-xs text-gray-300"></div>
+            </div>
+            
+            <button type="button" onclick="closeDashboards()" class="w-full bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs cursor-pointer mt-2"><i class="fa-solid fa-house mr-1"></i> Pada si FYP Home</button>
+        </div>
+
+        <!-- PERSONAL NOTES & IDEAS SAVER -->
+        <div id="notesDashboard" class="hidden absolute inset-0 bg-gray-950 z-30 flex flex-col pt-16 p-4 overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                <h2 class="text-yellow-400 font-bold text-base"><i class="fa-solid fa-lightbulb mr-1"></i> Awọn Imọran & Akọsilẹ Mi</h2>
+                <button type="button" onclick="closeDashboards()" class="bg-gray-800 px-3 py-1 rounded-lg text-xs text-gray-300 cursor-pointer"><i class="fa-solid fa-arrow-left mr-1"></i> Pada</button>
+            </div>
+
+            <div class="bg-gray-900 border border-yellow-500/50 p-4 rounded-xl space-y-3">
+                <textarea id="personalNoteInput" rows="3" placeholder="Kọ imọran tabi akọsilẹ rẹ nibi..." class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs text-white"></textarea>
+                <div class="flex gap-2">
+                    <button type="button" onclick="savePersonalNote()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 rounded text-xs cursor-pointer">Save Imọran Si Ẹrọ</button>
+                    <button type="button" onclick="createNewNote()" class="flex-1 bg-gray-800 text-yellow-300 py-2 rounded text-xs border border-gray-700 cursor-pointer">Create Imọran Tuntun</button>
+                </div>
+            </div>
+
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl space-y-3 flex-1">
+                <h3 class="text-xs font-bold text-yellow-400">Akojọ Awọn Imọran Ti A Ti Save</h3>
+                <div id="savedNotesList" class="space-y-2 max-h-[250px] overflow-y-auto text-xs"></div>
+            </div>
+            
+            <button type="button" onclick="closeDashboards()" class="w-full bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs cursor-pointer mt-2"><i class="fa-solid fa-house mr-1"></i> Pada si FYP Home</button>
+        </div>
+
+        <!-- LIVE CAMERA RECEIPT MODAL -->
+        <div id="liveCameraModal" class="hidden absolute inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+            <div class="bg-gray-900 border border-yellow-500 w-full max-w-sm p-5 rounded-2xl shadow-2xl space-y-4 text-center">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                    <h3 class="text-yellow-400 font-bold text-sm">Live Camera Receipt Capture</h3>
+                    <button type="button" onclick="closeLiveCameraModal()" class="text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <video id="receiptVideoElem" autoplay playsinline class="w-full h-48 bg-black rounded-lg object-cover border border-yellow-500/40"></video>
+                <canvas id="receiptCanvasElem" class="hidden"></canvas>
+                <div class="flex gap-2">
+                    <button type="button" onclick="startReceiptCamera()" class="flex-1 bg-gray-800 text-xs text-yellow-300 py-2 rounded cursor-pointer">Tan Kamẹra</button>
+                    <button type="button" onclick="captureAndVerifyReceipt()" class="flex-1 bg-yellow-500 text-black font-bold text-xs py-2 rounded cursor-pointer">Ya & Verify Ẹri</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECEIPT PREVIEW MODAL -->
+        <div id="receiptPreviewModal" class="hidden absolute inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+            <div class="bg-gray-900 border border-yellow-500 w-full max-w-sm p-5 rounded-2xl shadow-2xl space-y-4 text-center">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                    <h3 class="text-yellow-400 font-bold text-sm">Preview Ẹri Isanwo</h3>
+                    <button type="button" onclick="closeReceiptPreviewModal()" class="text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div id="receiptPreviewContentContainer" class="w-full h-64 bg-black rounded-lg overflow-hidden flex items-center justify-center border border-gray-800">
+                    <p class="text-xs text-gray-400">Ko tii si iwe-ẹri ti a gbe wọle.</p>
+                </div>
+                <button type="button" onclick="closeReceiptPreviewModal()" class="w-full bg-yellow-500 text-black font-bold text-xs py-2.5 rounded cursor-pointer">Pa Preview Na</button>
+            </div>
+        </div>
+
+        <!-- MY DASHBOARD -->
+        <div id="myDashboard" class="hidden absolute inset-0 bg-gray-950 z-30 flex flex-col pt-16 p-4 overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 border-b border-gray-800 pb-2">
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="closeDashboards()" class="bg-gray-800 px-3 py-1.5 rounded-lg text-xs text-gray-300 cursor-pointer"><i class="fa-solid fa-arrow-left mr-1"></i> Pada</button>
+                    <h2 class="text-yellow-400 font-bold text-base"><i class="fa-solid fa-user-gear mr-1"></i> My Dashboard</h2>
+                </div>
+                
+                <div class="relative">
+                    <button type="button" onclick="toggleMyDashDropdown()" class="bg-yellow-500 text-black px-3 py-1.5 rounded-lg text-xs font-bold shadow cursor-pointer flex items-center">
+                        <i class="fa-solid fa-bars mr-1"></i> Universal Menu <i class="fa-solid fa-chevron-down ml-1"></i>
+                    </button>
+                    <div id="myDashDropdownMenu" class="hidden absolute right-0 mt-2 w-64 bg-gray-900 border border-yellow-500/50 rounded-xl shadow-2xl overflow-hidden z-50 text-xs">
+                        <a href="#" onclick="openDashboard('chatHubDashboard')" class="block px-4 py-3 hover:bg-gray-800 border-b border-gray-800 text-yellow-300 font-bold"><i class="fa-brands fa-whatsapp mr-2"></i> TIWA NI Chat & Call Hub</a>
+                        <a href="#" onclick="openDashboard('helpCenterDashboard')" class="block px-4 py-3 hover:bg-gray-800 border-b border-gray-800 text-yellow-300 font-bold"><i class="fa-solid fa-hands-holding-child mr-2"></i> TIWA NI Family Help Center</a>
+                        <a href="#" onclick="openDashboard('notesDashboard')" class="block px-4 py-3 hover:bg-gray-800 border-b border-gray-800 text-yellow-300 font-bold"><i class="fa-solid fa-lightbulb mr-2"></i> Awọn Imọran & Akọsilẹ Mi</a>
+                        <a href="#" onclick="openDashboard('meetingRoom')" class="block px-4 py-3 hover:bg-gray-800 border-b border-gray-800 text-gray-200"><i class="fa-solid fa-video mr-2"></i> Family Meeting Room</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl mb-4 space-y-3">
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <div id="myProfilePicContainer" class="w-16 h-16 bg-gray-800 rounded-full overflow-hidden flex items-center justify-center border-2 border-yellow-500 relative shadow-lg">
+                            <span id="myProfileInitial" class="text-yellow-400 text-xl font-bold">T</span>
+                        </div>
+                        <label class="absolute -bottom-1 -right-1 bg-yellow-500 hover:bg-yellow-400 text-black w-7 h-7 rounded-full flex items-center justify-center text-xs shadow cursor-pointer border border-black" title="Change Profile Picture">
+                            <i class="fa-solid fa-camera"></i>
+                            <input type="file" id="profilePicInput" accept="image/*" class="hidden" onchange="updateProfilePicture(event)">
+                        </label>
+                    </div>
+                    <div>
+                        <h3 id="profileNameDisplay" class="font-bold text-white text-sm">Timothy Adewale</h3>
+                        <p id="profileSubtitleDisplay" class="text-[11px] text-gray-400">Imeko Afon, Ogun State</p>
+                        <span id="myUniquePaymentCodeDisplay" class="text-[11px] text-yellow-400 font-extrabold block mt-0.5">Payment Code: OBG-MEM-101</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl flex-1 mb-3">
+                <h3 class="text-xs font-bold text-yellow-400 mb-2"><i class="fa-solid fa-clock-rotate-left mr-1"></i> Itan Awọn Fidio & Aworan</h3>
+                <div id="userHistoryList" class="space-y-2 text-xs text-gray-400">
+                    <p>Ko tii si itan kankan.</p>
+                </div>
+            </div>
+            
+            <button type="button" onclick="closeDashboards()" class="w-full bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs cursor-pointer mt-2"><i class="fa-solid fa-house mr-1"></i> Pada si FYP Home</button>
+        </div>
+
+        <!-- ENGINE LEDGER MODAL -->
+        <div id="engineLedgerModal" class="hidden absolute inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+            <div class="bg-gray-900 border border-yellow-500 w-full max-w-sm p-5 rounded-2xl shadow-2xl space-y-4">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                    <h3 id="modalLedgerTitle" class="text-yellow-400 font-bold text-sm">Engine Ledger</h3>
+                    <button type="button" onclick="closeEngineLedgerModal()" class="text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <p id="modalLedgerSubtitle" class="text-[11px] text-gray-300">Akojọ gbogbo mọlẹbi ti wọn ti san owo:</p>
+                <div id="modalLedgerListContainer" class="space-y-2 max-h-[250px] overflow-y-auto pr-1 text-xs"></div>
+                <button type="button" onclick="closeEngineLedgerModal()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-2.5 rounded-lg text-xs shadow cursor-pointer">Pa Padà (Close)</button>
+            </div>
+        </div>
+
+        <!-- UPLOAD MODAL -->
+        <div id="uploadModal" class="hidden absolute inset-0 bg-black/85 z-50 flex items-center justify-center p-4">
+            <div class="bg-gray-900 border border-gray-700 w-full max-w-sm p-5 rounded-2xl shadow-2xl space-y-4">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                    <h3 class="text-yellow-400 font-bold text-sm"><i class="fa-solid fa-cloud-arrow-up"></i> Gbe Fidio Sori FYP</h3>
+                    <button type="button" onclick="closeUploadModal()" class="text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Yan Fidio tabi Aworan</label>
+                    <input type="file" id="mediaFileInput" accept="video/*,image/*" class="w-full text-xs text-gray-300 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-yellow-500 file:text-black">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Apejuwe (Caption)</label>
+                    <textarea id="mediaCaptionInput" rows="2" placeholder="Kọ akọle..." class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs text-white"></textarea>
+                </div>
+                <button type="button" onclick="publishToFyp()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-2.5 rounded-lg text-xs shadow cursor-pointer">Gbe Sori FYP Bayii</button>
+            </div>
+        </div>
+
+        <!-- BANNER AD BAR AT THE BOTTOM FIXED -->
+        <div class="banner-ad-bar">
+            <span>📢 Sponsored: First Crown Wood & Paint - Global Connect Hub 🚀</span>
+        </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <div class="bg-gray-900 border-t border-gray-800 p-3 flex justify-around items-center z-40 text-gray-400 h-[50px]">
+            <button type="button" onclick="closeDashboards()" class="text-yellow-400 flex flex-col items-center text-xs cursor-pointer"><i class="fa-solid fa-house text-base"></i> Home</button>
+            <button type="button" onclick="openUploadModal()" class="bg-yellow-500 text-black px-4 py-1.5 rounded-full font-bold text-xs shadow cursor-pointer"><i class="fa-solid fa-plus mr-1"></i> Gbe Video</button>
+            <button type="button" onclick="openDashboard('myDashboard')" class="flex flex-col items-center text-xs cursor-pointer"><i class="fa-solid fa-user text-base"></i> Profile</button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let receiptStream = null;
+        let wifeCameraStream = null;
+        let wifePassportDataUrl = "";
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let recordedAudioBlob = null;
+        let recordedAudioUrl = null;
+        let meetingAudioElement = null;
+        let uploadedReceiptObjectUrl = null;
+        let meetingStartTime = "";
+        let meetingStartDateStr = "";
+        let isMeetingActive = false;
+        let loggedInUsername = "Timothy Adewale";
+        let loggedInPaymentCode = "OBG-MEM-101";
+        let userProfilePictureUrl = localStorage.getItem('obogun_profile_pic') || '';
+        let isMyMicMuted = false;
+        let isHandRaised = false;
+        let currentChatUser = "";
+        let pendingStickerItem = null;
+        let currentShareCaption = "";
+        let playPauseHideTimeouts = {};
+        let fypVideoObserver = null;
+        let pendingRegistrationData = null;
+        let viewedPostsCount = 0;
+
+        let familyMembersList = JSON.parse(localStorage.getItem('obogun_members_directory') || JSON.stringify([
+            { name: 'Timothy Adewale', age: 43, code: 'OBG-MEM-101', city: 'Imeko', online: true },
+            { name: 'Temidayo Omolola', age: 38, code: 'OBG-MEM-102', city: 'Imeko', online: false },
+            { name: 'Fọọlasadé', age: 30, code: 'OBG-MEM-103', city: 'Lagos', online: false },
+            { name: 'Jeremaya', age: 12, code: 'OBG-MEM-104', city: 'Imeko', online: true }
+        ]));
+
+        let engine1Data = JSON.parse(localStorage.getItem('obogun_engine1') || JSON.stringify({ name: 'Ajọ Idile Ọbọọgun 1', target: 5000, acct: '0123456789', bank: 'Access', thanks: 'Ẹ se pupọ!', ledger: [] }));
+        let engine2Data = JSON.parse(localStorage.getItem('obogun_engine2') || JSON.stringify({ name: 'Ajọ Idile Ọbọọgun 2', target: 10000, acct: '0234567890', bank: 'FirstBank', thanks: 'A dupẹ lọwọ rẹ!', ledger: [] }));
+        let engine3Data = JSON.parse(localStorage.getItem('obogun_engine3') || JSON.stringify({ name: 'Ipade Minute', target: 2000, acct: '0345678901', bank: 'GTBank', thanks: 'A dupẹ fun wiwa.', ledger: [], withdrawals: [] }));
+
+        let familyOfficials = JSON.parse(localStorage.getItem('obogun_officials') || JSON.stringify({
+            chairman: 'Timothy Adewale', deputy: 'Ko tii si', secretary: 'Ko tii si', treasurer: 'Ko tii si', publicist: 'Ko tii si', elders: ['Oloye Idile 1', 'Oloye Idile 2']
+        }));
+
+        let directChatsData = JSON.parse(localStorage.getItem('obogun_direct_chats') || '{}');
+        let savedNotesData = JSON.parse(localStorage.getItem('obogun_saved_notes') || '[]');
+        let helpRequestsData = JSON.parse(localStorage.getItem('obogun_help_requests') || '[]');
+        let secretaryBagData = JSON.parse(localStorage.getItem('obogun_secretary_bag') || '[]');
+        let fypAllPosts = JSON.parse(localStorage.getItem('obogun_fyp_posts') || JSON.stringify([
+            { id: 'sample-1', user: 'Olori Ọbọọgun', caption: 'Ajo idile wa ni agbaye kárí! Ọbọọgun gbe o.', textContent: 'Ọbọọgun Omo Erin jogun ola, omo ajigbotan...', isVideo: false, url: '', likes: 0, commentsCount: 1 },
+            { id: 'sample-2', user: 'Iyawo Ile Idile', caption: 'E ǹlẹ gbogbo mọlẹbi Ọbọọgun ati awọn iyawo ile kasẹ ki ni ile yi!', textContent: 'Ifẹ ẹbi wa jinlẹ pupọ...', isVideo: false, url: '', likes: 2, commentsCount: 0 }
+        ]));
+        let postsComments = JSON.parse(localStorage.getItem('obogun_comments') || JSON.stringify({
+            'sample-1': [{ user: 'Oloye Idile', text: 'E ku ojumo gbogbo mọlẹbi!' }]
+        }));
+        let currentActivePostId = 'sample-1';
+        let playbackAudioElement = null;
+
+        function saveData() {
+            localStorage.setItem('obogun_members_directory', JSON.stringify(familyMembersList));
+            localStorage.setItem('obogun_direct_chats', JSON.stringify(directChatsData));
+            localStorage.setItem('obogun_saved_notes', JSON.stringify(savedNotesData));
+            localStorage.setItem('obogun_help_requests', JSON.stringify(helpRequestsData));
+            localStorage.setItem('obogun_secretary_bag', JSON.stringify(secretaryBagData));
+            localStorage.setItem('obogun_officials', JSON.stringify(familyOfficials));
+            localStorage.setItem('obogun_engine1', JSON.stringify(engine1Data));
+            localStorage.setItem('obogun_engine2', JSON.stringify(engine2Data));
+            localStorage.setItem('obogun_engine3', JSON.stringify(engine3Data));
+            localStorage.setItem('obogun_fyp_posts', JSON.stringify(fypAllPosts));
+            localStorage.setItem('obogun_comments', JSON.stringify(postsComments));
+            localStorage.setItem('obogun_profile_pic', userProfilePictureUrl);
+        }
+
+        function updateProfilePicture(event) {
+            const file = event.target.files[0];
+            if(file) {
+                userProfilePictureUrl = URL.createObjectURL(file);
+                saveData();
+                renderUserProfilePic();
+                alert("✅ A ti yipada fọto profaili rẹ aṣeyọri!");
+            }
+        }
+
+        function renderUserProfilePic() {
+            const container = document.getElementById('myProfilePicContainer');
+            if(!container) return;
+            if(userProfilePictureUrl) {
+                container.innerHTML = `<img src="${userProfilePictureUrl}" class="w-full h-full object-cover rounded-full">`;
+            } else {
+                container.innerHTML = `<span id="myProfileInitial" class="text-yellow-400 text-xl font-bold">${loggedInUsername.charAt(0).toUpperCase()}</span>`;
+            }
+        }
+
+        function switchTab(tab) {
+            const formSignin = document.getElementById('formSignin');
+            const formCreate = document.getElementById('formCreate');
+            const formWifeCreate = document.getElementById('formWifeCreate');
+            const tabSignin = document.getElementById('tabSignin');
+            const tabCreate = document.getElementById('tabCreate');
+            const tabWifeCreate = document.getElementById('tabWifeCreate');
+
+            formSignin.classList.add('hidden');
+            formCreate.classList.add('hidden');
+            formWifeCreate.classList.add('hidden');
+            tabSignin.className = "flex-1 pb-2 font-semibold text-gray-400 transition cursor-pointer text-xs";
+            tabCreate.className = "flex-1 pb-2 font-semibold text-gray-400 transition cursor-pointer text-xs";
+            tabWifeCreate.className = "flex-1 pb-2 font-semibold text-gray-400 transition cursor-pointer text-xs";
+
+            if (tab === 'signin') {
+                formSignin.classList.remove('hidden');
+                tabSignin.className = "flex-1 pb-2 font-bold text-yellow-400 border-b-2 border-yellow-400 transition cursor-pointer text-xs";
+            } else if (tab === 'create') {
+                formCreate.classList.remove('hidden');
+                tabCreate.className = "flex-1 pb-2 font-bold text-yellow-400 border-b-2 border-yellow-400 transition cursor-pointer text-xs";
+            } else if (tab === 'wifeCreate') {
+                formWifeCreate.classList.remove('hidden');
+                tabWifeCreate.className = "flex-1 pb-2 font-bold text-yellow-400 border-b-2 border-yellow-400 transition cursor-pointer text-xs";
+            }
+        }
+
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if(input.type === 'password') {
+                input.type = 'text';
+                btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+            } else {
+                input.type = 'password';
+                btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+            }
+        }
+
+        function openWifeCameraModal() {
+            document.getElementById('wifeCameraModal').classList.remove('hidden');
+        }
+
+        function closeWifeCameraModal() {
+            if(wifeCameraStream) wifeCameraStream.getTracks().forEach(t => t.stop());
+            document.getElementById('wifeCameraModal').classList.add('hidden');
+        }
+
+        async function startWifeCamera() {
+            try {
+                wifeCameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                document.getElementById('wifeVideoElem').srcObject = wifeCameraStream;
+            } catch(err) {
+                alert("Jọwọ gba laaye lati lo kamẹra foonu rẹ.");
+            }
+        }
+
+        function captureWifePassport() {
+            const video = document.getElementById('wifeVideoElem');
+            const canvas = document.getElementById('wifeCanvasElem');
+            canvas.width = 300;
+            canvas.height = 300;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            wifePassportDataUrl = canvas.toDataURL('image/png');
+            userProfilePictureUrl = wifePassportDataUrl;
+            closeWifeCameraModal();
+            document.getElementById('wifePassportStatus').innerHTML = `<span class='text-green-400 font-bold'>✅ A ya passport 2x2 aṣeyọri!</span>`;
+            alert("A ya live passport 2x2 fún iyawo ile aṣeyọri!");
+        }
+
+        function handleRegistrationWithAds(e, type) {
+            e.preventDefault();
+            if(type === 'member') {
+                const fullName = document.getElementById('signupFullName').value.trim();
+                if(!fullName) return;
+                loggedInUsername = fullName;
+                pendingRegistrationData = { name: loggedInUsername, city: 'Ogun' };
+            } else if(type === 'wife') {
+                const wifeName = document.getElementById('wifeFullName').value.trim();
+                const husbandName = document.getElementById('wifeHusbandName').value.trim();
+                const childName = document.getElementById('wifeChildName').value.trim();
+                if(!wifeName || !husbandName) { alert("Kọ orukọ rẹ ati ti ọkọ rẹ kọkọ."); return; }
+                loggedInUsername = wifeName;
+                pendingRegistrationData = { name: wifeName, husband: husbandName, child: childName, type: 'Iyawo Ile' };
+            }
+
+            if(!familyMembersList.some(m => m.name === loggedInUsername)) {
+                familyMembersList.push({ name: loggedInUsername, age: 30, code: 'OBG-MEM-' + (100 + familyMembersList.length + 1), city: 'Ogun', online: true });
+                saveData();
+            }
+
+            document.getElementById('authPage').classList.add('hidden');
+            playRegistrationAdsSequence(1);
+        }
+
+        function playRegistrationAdsSequence(adNumber) {
+            const modal = document.getElementById('regAdsModal');
+            modal.classList.remove('hidden');
+            document.getElementById('adModalTitle').innerHTML = `Ipolowo Iforukọsilẹ (<span id="adStepIndicator">${adNumber}</span>/3)`;
+            document.getElementById('adStepIndicator').innerText = adNumber;
+            const btn = document.getElementById('nextAdBtn');
+            const timerText = document.getElementById('regAdTimerText');
+            btn.disabled = true;
+            btn.className = "w-full bg-gray-700 text-gray-400 font-bold p-2.5 rounded-lg text-xs cursor-not-allowed";
+            btn.innerText = "Jọwọ Duro...";
+
+            let countdown = 5;
+            timerText.innerText = `Ipolowo ${adNumber} n ṣiṣẹ lọwọ... (${countdown}s)`;
+
+            const timer = setInterval(() => {
+                countdown--;
+                if(countdown > 0) {
+                    timerText.innerText = `Ipolowo ${adNumber} n ṣiṣẹ lọwọ... (${countdown}s)`;
+                } else {
+                    clearInterval(timer);
+                    timerText.innerText = `Ipolowo ${adNumber} ti pari!`;
+                    btn.disabled = false;
+                    btn.className = "w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-2.5 rounded-lg text-xs cursor-pointer shadow";
+                    
+                    if(adNumber < 3) {
+                        btn.innerText = `Tẹ lati wo Ipolowo Keji (${adNumber + 1}/3)`;
+                        btn.onclick = () => playRegistrationAdsSequence(adNumber + 1);
+                    } else {
+                        btn.innerText = "Wọle si App Na Bayii";
+                        btn.onclick = () => {
+                            modal.classList.add('hidden');
+                            finishLoginSetup();
+                        };
+                    }
+                }
+            }, 1000);
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const signinInput = document.getElementById('signinUserIdentifier');
+            if(signinInput && signinInput.value.trim() !== '') {
+                loggedInUsername = signinInput.value.trim();
+            }
+            document.getElementById('authPage').classList.add('hidden');
+            finishLoginSetup();
+        }
+
+        function finishLoginSetup() {
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('profileNameDisplay').innerText = loggedInUsername;
+            
+            let subtitle = "Imeko Afon, Ogun State";
+            if(pendingRegistrationData && pendingRegistrationData.type === 'Iyawo Ile') {
+                subtitle = `Iyawo Ile Ọbọọgun • Ọkọ: ${pendingRegistrationData.husband}`;
+            }
+            document.getElementById('profileSubtitleDisplay').innerText = subtitle;
+            renderUserProfilePic();
+
+            renderFypFeed();
+            updateChatHubUI();
+            updateHelpCenterUI();
+            updateSavedNotesUI();
+            updateMeetingRoomOfficialsUI();
+            updateMeetingMembersDirectoryUI();
+            updateActiveSpeakersUI();
+            updateEngineTotalsUI();
+            updateEngineDisplayNames();
+            renderStickerTray();
+            renderControlEldersList();
+        }
+
+        function toggleDropdown() { document.getElementById('dropdownMenu').classList.toggle('hidden'); }
+        function toggleMyDashDropdown() { document.getElementById('myDashDropdownMenu').classList.toggle('hidden'); }
+        function toggleControlDropdown() { document.getElementById('controlDropdownMenu').classList.toggle('hidden'); }
+        function toggleMeetingDropdown() { document.getElementById('meetingDropdownMenu').classList.toggle('hidden'); }
+        function closeMeetingDropdown() { document.getElementById('meetingDropdownMenu').classList.add('hidden'); }
+
+        function scrollToSection(sectionId) {
+            document.getElementById('controlDropdownMenu').classList.add('hidden');
+            const elem = document.getElementById(sectionId);
+            if(elem) elem.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openDashboard(dashId) {
+            document.getElementById('dropdownMenu').classList.add('hidden');
+            document.getElementById('myDashDropdownMenu').classList.add('hidden');
+            document.getElementById('meetingRoom').classList.add('hidden');
+            document.getElementById('myDashboard').classList.add('hidden');
+            document.getElementById('controlCenter').classList.add('hidden');
+            document.getElementById('chatHubDashboard').classList.add('hidden');
+            document.getElementById('helpCenterDashboard').classList.add('hidden');
+            document.getElementById('notesDashboard').classList.add('hidden');
+            document.getElementById('userProfileDashboard').classList.add('hidden');
+            document.getElementById('fypScreen').classList.add('hidden');
+            pauseAllVideos();
+
+            document.getElementById(dashId).classList.remove('hidden');
+            if(dashId === 'chatHubDashboard') updateChatHubUI();
+            if(dashId === 'helpCenterDashboard') updateHelpCenterUI();
+            if(dashId === 'notesDashboard') updateSavedNotesUI();
+            if(dashId === 'meetingRoom') {
+                updateMeetingRoomOfficialsUI();
+                updateMeetingMembersDirectoryUI();
+                updateActiveSpeakersUI();
+            }
+            if(dashId === 'controlCenter') {
+                updateSecretaryBagUI();
+                updateEngineTotalsUI();
+                renderControlEldersList();
+            }
+        }
+
+        function closeDashboards() {
+            document.getElementById('meetingRoom').classList.add('hidden');
+            document.getElementById('myDashboard').classList.add('hidden');
+            document.getElementById('controlCenter').classList.add('hidden');
+            document.getElementById('chatHubDashboard').classList.add('hidden');
+            document.getElementById('helpCenterDashboard').classList.add('hidden');
+            document.getElementById('notesDashboard').classList.add('hidden');
+            document.getElementById('userProfileDashboard').classList.add('hidden');
+            document.getElementById('whatsappChatModal').classList.add('hidden');
+            document.getElementById('fypScreen').classList.remove('hidden');
+            initVideoObserver();
+        }
+
+        function openUserProfile(username) {
+            document.getElementById('profileUsernameDisplay').innerText = username;
+            document.getElementById('profileDashboardTitle').innerText = `Profaili: ${username}`;
+            document.getElementById('profileAvatarBig').innerText = username.charAt(0);
+            
+            const container = document.getElementById('userProfilePostsContainer');
+            let userPosts = fypAllPosts.filter(p => p.user === username);
+            if(userPosts.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center">Olumulo yii ko tii gbe fidio tabi aworan kankan sori fyp.</p>`;
+            } else {
+                let html = '';
+                userPosts.forEach(post => {
+                    let mediaContent = post.isVideo ? `<video src="${post.url}" controls class="w-full h-36 object-cover rounded-lg"></video>` : (post.url ? `<img src="${post.url}" class="w-full h-36 object-cover rounded-lg">` : `<div class="p-3 bg-gray-800 rounded-lg text-xs text-yellow-400">${post.textContent}</div>`);
+                    html += `
+                        <div class="bg-gray-800 p-3 rounded-xl border border-gray-700 space-y-2">
+                            ${mediaContent}
+                            <p class="text-xs text-gray-200">${post.caption}</p>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+            document.getElementById('userProfileDashboard').classList.remove('hidden');
+        }
+
+        function closeUserProfileDashboard() {
+            document.getElementById('userProfileDashboard').classList.add('hidden');
+        }
+
+        function openWhatsappChatFromProfile() {
+            let uname = document.getElementById('profileUsernameDisplay').innerText;
+            closeUserProfileDashboard();
+            openDashboard('chatHubDashboard');
+            openWhatsappChat(uname);
+        }
+
+        function openShareModal(caption) {
+            currentShareCaption = caption;
+            const container = document.getElementById('shareFamilyMembersList');
+            let html = '';
+            familyMembersList.forEach(m => {
+                if(m.name === loggedInUsername) return;
+                html += `
+                    <div class="bg-gray-800 p-2 rounded-lg flex justify-between items-center">
+                        <span class="text-white">${m.name}</span>
+                        <button type="button" onclick="shareToFamilyMember('${m.name}')" class="bg-purple-600 text-white px-2.5 py-1 rounded text-[10px] font-bold cursor-pointer">Fi ranṣẹ</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.add('hidden');
+        }
+
+        function shareToSocialMedia() {
+            if(navigator.share) {
+                navigator.share({ title: 'ỌBỌỌGUN GLOBAL FAMILY CONNECT', text: currentShareCaption, url: window.location.href });
+            } else {
+                alert("A ti pin fidio/aworan yii sori Social Media aṣeyọri!");
+            }
+            closeShareModal();
+        }
+
+        function shareToFamilyMember(memberName) {
+            const chatKey = [loggedInUsername, memberName].sort().join('_');
+            if(!directChatsData[chatKey]) directChatsData[chatKey] = [];
+            directChatsData[chatKey].push({
+                sender: loggedInUsername,
+                text: `[Shared Post]: ${currentShareCaption}`,
+                type: 'text',
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                read: true
+            });
+            saveData();
+            alert(`A ti fi ranṣẹ si ${memberName} ninu DM chat aṣeyọri!`);
+            closeShareModal();
+        }
+
+        function updateChatHubUI() {
+            const container = document.getElementById('chatHubMembersList');
+            if(!container) return;
+            let html = '';
+            familyMembersList.forEach(m => {
+                if(m.name === loggedInUsername) return;
+                html += `
+                    <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl flex justify-between items-center">
+                        <div class="flex items-center space-x-3">
+                            <div class="relative w-10 h-10 bg-yellow-500 text-black font-bold rounded-full flex items-center justify-center">
+                                ${m.name.charAt(0)}
+                                <span class="absolute bottom-0 right-0 w-3 h-3 ${m.online ? 'bg-green-500' : 'bg-gray-500'} border-2 border-gray-900 rounded-full"></span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-xs">${m.name}</h4>
+                                <p class="text-[10px] text-gray-400">${m.online ? 'Online' : 'Offline'} • ${m.city || ''}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="openWhatsappChat('${m.name}')" class="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer shadow"><i class="fa-brands fa-whatsapp mr-1"></i> Chat</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function openWhatsappChat(username) {
+            currentChatUser = username;
+            document.getElementById('activeChatUsername').innerText = username;
+            document.getElementById('activeChatAvatar').innerText = username.charAt(0);
+            let mem = familyMembersList.find(m => m.name === username);
+            const isOnline = mem ? mem.online : false;
+            document.getElementById('activeChatStatus').innerText = isOnline ? 'Online' : 'Offline';
+            document.getElementById('activeChatOnlineDot').className = `absolute bottom-0 right-0 w-3 h-3 ${isOnline ? 'bg-green-500' : 'bg-gray-500'} border-2 border-gray-900 rounded-full`;
+            document.getElementById('whatsappChatModal').classList.remove('hidden');
+            renderWhatsappMessages();
+        }
+
+        function closeWhatsappChat() {
+            document.getElementById('whatsappChatModal').classList.add('hidden');
+            currentChatUser = "";
+        }
+
+        function renderWhatsappMessages() {
+            const container = document.getElementById('whatsappMessagesContainer');
+            const chatKey = [loggedInUsername, currentChatUser].sort().join('_');
+            const messages = directChatsData[chatKey] || [];
+            let mem = familyMembersList.find(m => m.name === currentChatUser);
+            const isOnline = mem ? mem.online : false;
+            
+            if(messages.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-center py-6">Ko tii si ifiranṣẹ laarin yin. Bẹrẹ sọrọ bayi!</p>`;
+                return;
+            }
+
+            let html = '';
+            messages.forEach(msg => {
+                let isMe = msg.sender === loggedInUsername;
+                let ticks = isMe ? `<span class="${isOnline ? 'text-blue-400' : 'text-gray-400'} text-[10px] font-bold ml-1">${isOnline ? '✓✓' : '✓'}</span>` : '';
+
+                let contentHTML = `<p class="text-white">${msg.text}</p>`;
+                if(msg.type === 'media') {
+                    contentHTML = msg.isVideo ? `<video src="${msg.url}" controls class="w-48 rounded"></video>` : `<img src="${msg.url}" class="w-48 rounded">`;
+                } else if(msg.type === 'voice') {
+                    contentHTML = `<audio src="${msg.url}" controls class="w-48 h-8"></audio>`;
+                } else if(msg.type === 'sticker') {
+                    contentHTML = `<span class="text-3xl">${msg.text}</span>`;
+                }
+
+                html += `
+                    <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
+                        <div class="${isMe ? 'bg-emerald-800 text-white' : 'bg-gray-800 text-gray-200'} p-3 rounded-2xl max-w-[75%] space-y-1 shadow">
+                            ${contentHTML}
+                            <div class="text-[9px] text-right text-gray-300 flex items-center justify-end space-x-1">
+                                <span>${msg.time}</span>
+                                ${ticks}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendWhatsappTextMessage() {
+            const input = document.getElementById('whatsappInputText');
+            const text = input.value.trim();
+            if(!text || !currentChatUser) return;
+
+            const chatKey = [loggedInUsername, currentChatUser].sort().join('_');
+            if(!directChatsData[chatKey]) directChatsData[chatKey] = [];
+
+            let mem = familyMembersList.find(m => m.name === currentChatUser);
+            const isOnline = mem ? mem.online : false;
+
+            directChatsData[chatKey].push({
+                sender: loggedInUsername,
+                text: text,
+                type: 'text',
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                read: isOnline
+            });
+
+            input.value = '';
+            saveData();
+            renderWhatsappMessages();
+        }
+
+        const requestedStickers = [
+            '❤️ Like', '⭐⭐⭐⭐⭐ 5 Star', '⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ 10 Star', '100/', '50/', '👶 Ọmọ wa ni', '🍼 Ọmọ wa ma ni', '👏 Pa atẹwọ', '🙇‍♂️ Ikini Ọkunrin (Dọbalẹ)', '🙇‍♀️ Ikini Obinrin (Kunlẹ)', '💆‍♂️ Pa ori rẹ',
+            '👑', '🔥', '🙌', '💰', '🚀', '⭐', '🎉', '💪', '😎', '🥳',
+            '🤩', '👋', '🙏', '💯', '🎯', '💡', '🏆', '💎', '🎁', '🎈',
+            '🍾', '🍻', '🌹', '🌻', '⚡', '🌟', '💥', '🎨', '🎬', '🎵',
+            '🎶', '🎤', '🎧', '🎸', '🎹', '🥁', '🎷', '🚗', '✈️', '🏠',
+            '💻', '📱', '📷', '📚', '⚽', '🏀', '🥇', '💸', '💳', '🛡️',
+            '⚓', '🔮', '🍀', '🌴', '🌊', '💼', '📈', '📉', '📌', '🔍'
+        ];
+
+        function toggleStickerTray() {
+            document.getElementById('stickerTray').classList.toggle('hidden');
+        }
+
+        function renderStickerTray() {
+            const tray = document.getElementById('stickerTray');
+            if(!tray) return;
+            let html = '';
+            requestedStickers.forEach((st, idx) => {
+                let isFree = idx < 12;
+                html += `
+                    <button type="button" onclick='selectSticker(${JSON.stringify(st)}, ${isFree})' class="p-2 bg-gray-900 hover:bg-gray-800 rounded text-xs flex flex-col items-center justify-center relative cursor-pointer border border-gray-800">
+                        <span class="text-lg">${st.split(' ')[0]}</span>
+                        <span class="text-[8px] text-gray-300 truncate w-full text-center">${st}</span>
+                        ${isFree ? '<span class="text-[7px] text-green-400 font-bold">Free</span>' : '<span class="text-[7px] text-yellow-400 font-bold"><i class="fa-solid fa-video"></i> Ad</span>'}
+                    </button>
+                `;
+            });
+            tray.innerHTML = html;
+        }
+
+        function selectSticker(stickerItem, isFree) {
+            if(!currentChatUser) return;
+            pendingStickerItem = stickerItem;
+            
+            if(stickerItem.includes('Ikini')) {
+                document.getElementById('stickerEditTitle').innerText = `Edit Ọrọ Ikini: ${stickerItem}`;
+                document.getElementById('stickerEditTextArea').value = `Ẹ ǹlẹ o, mo dọbalẹ / kunlẹ ki gbogbo mọlẹbi ni ile yi!`;
+                document.getElementById('stickerEditModal').classList.remove('hidden');
+                return;
+            }
+
+            if(isFree) {
+                dispatchStickerMessage(stickerItem);
+            } else {
+                playStickerAdSequence();
+            }
+        }
+
+        function closeStickerEditModal() {
+            document.getElementById('stickerEditModal').classList.add('hidden');
+        }
+
+        function sendEditedStickerMessage() {
+            const editedText = document.getElementById('stickerEditTextArea').value.trim();
+            closeStickerEditModal();
+            dispatchStickerMessage(`${pendingStickerItem} - "${editedText}"`);
+        }
+
+        function playStickerAdSequence() {
+            const modal = document.getElementById('regAdsModal');
+            modal.classList.remove('hidden');
+            document.getElementById('adModalTitle').innerHTML = `Ipolowo Sticker Ad (Lati Ṣii Sticker)`;
+            const btn = document.getElementById('nextAdBtn');
+            const timerText = document.getElementById('regAdTimerText');
+            btn.disabled = true;
+            btn.className = "w-full bg-gray-700 text-gray-400 font-bold p-2.5 rounded-lg text-xs cursor-not-allowed";
+            btn.innerText = "Jọwọ Duro...";
+
+            let countdown = 5;
+            timerText.innerText = `Ipolowo Sticker n ṣiṣẹ lọwọ... (${countdown}s)`;
+
+            const timer = setInterval(() => {
+                countdown--;
+                if(countdown > 0) {
+                    timerText.innerText = `Ipolowo Sticker n ṣiṣẹ lọwọ... (${countdown}s)`;
+                } else {
+                    clearInterval(timer);
+                    timerText.innerText = `Ipolowo ti pari lodindin!`;
+                    btn.disabled = false;
+                    btn.className = "w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-2.5 rounded-lg text-xs cursor-pointer shadow";
+                    btn.innerText = "Lo Sticker Na Bayii";
+                    btn.onclick = () => {
+                        modal.classList.add('hidden');
+                        dispatchStickerMessage(pendingStickerItem);
+                    };
+                }
+            }, 1000);
+        }
+
+        function dispatchStickerMessage(stickerContent) {
+            const chatKey = [loggedInUsername, currentChatUser].sort().join('_');
+            if(!directChatsData[chatKey]) directChatsData[chatKey] = [];
+
+            directChatsData[chatKey].push({
+                sender: loggedInUsername,
+                text: stickerContent,
+                type: 'sticker',
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                read: true
+            });
+
+            saveData();
+            renderWhatsappMessages();
+            document.getElementById('stickerTray').classList.add('hidden');
+        }
+
+        function sendChatMedia(event) {
+            const file = event.target.files[0];
+            if(!file || !currentChatUser) return;
+            const url = URL.createObjectURL(file);
+            const isVideo = file.type.startsWith('video');
+
+            const chatKey = [loggedInUsername, currentChatUser].sort().join('_');
+            if(!directChatsData[chatKey]) directChatsData[chatKey] = [];
+
+            directChatsData[chatKey].push({
+                sender: loggedInUsername,
+                url: url,
+                type: 'media',
+                isVideo: isVideo,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                read: true
+            });
+
+            saveData();
+            renderWhatsappMessages();
+        }
+
+        function recordVoiceMessage() {
+            alert("A ti bẹrẹ igbasilẹ voice note rẹ fún DM.");
+            setTimeout(() => {
+                const chatKey = [loggedInUsername, currentChatUser].sort().join('_');
+                if(!directChatsData[chatKey]) directChatsData[chatKey] = [];
+                directChatsData[chatKey].push({
+                    sender: loggedInUsername,
+                    url: '',
+                    type: 'voice',
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    read: true
+                });
+                saveData();
+                renderWhatsappMessages();
+                alert("A ti fi ohun (voice message) ranṣẹ aṣeyọri!");
+            }, 1000);
+        }
+
+        function startVideoCall() { alert(`Bẹrẹ Video Call pẹlu ${currentChatUser}...`); }
+        function startVoiceCall() { alert(`Bẹrẹ Voice Call pẹlu ${currentChatUser}...`); }
+
+        function updateHelpCenterUI() {
+            const listContainer = document.getElementById('helpCenterRecipientsList');
+            if(!listContainer) return;
+            let html = '';
+            familyMembersList.forEach(m => {
+                if(m.name === loggedInUsername) return;
+                html += `
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" name="helpRecipient" value="${m.name}" class="rounded bg-gray-800 border-gray-700 text-yellow-500">
+                        <span class="text-white">${m.name} (${m.city || 'Mọlẹbi'})</span>
+                    </label>
+                `;
+            });
+            listContainer.innerHTML = html;
+
+            const historyContainer = document.getElementById('helpRequestsHistoryList');
+            let historyHtml = '';
+            let myReqs = helpRequestsData.filter(r => r.sender === loggedInUsername);
+            if(myReqs.length === 0) {
+                historyContainer.innerHTML = `<p class="text-gray-500">Ko tii si ibeere iranlọwọ.</p>`;
+            } else {
+                myReqs.forEach(r => {
+                    historyHtml += `
+                        <div class="bg-gray-800 p-2.5 rounded-lg border border-gray-700 space-y-1">
+                            <p class="text-white font-bold">${r.text}</p>
+                            <p class="text-[10px] text-yellow-400">Awọn ti a ran si: ${r.recipients.join(', ')} • ${r.time}</p>
+                        </div>
+                    `;
+                });
+                historyContainer.innerHTML = historyHtml;
+            }
+        }
+
+        function submitHelpRequest() {
+            const text = document.getElementById('helpRequestText').value.trim();
+            const checkedBoxes = document.querySelectorAll('input[name="helpRecipient"]:checked');
+            let recipients = Array.from(checkedBoxes).map(cb => cb.value);
+
+            if(!text || recipients.length === 0) {
+                alert("Jọwọ kọ alaye iranlọwọ ki o si yan mọlẹbi o kere ju ọkan.");
+                return;
+            }
+
+            helpRequestsData.push({
+                sender: loggedInUsername,
+                text: text,
+                recipients: recipients,
+                time: new Date().toLocaleString()
+            });
+
+            saveData();
+            document.getElementById('helpRequestText').value = '';
+            updateHelpCenterUI();
+            alert("✅ A ti fi ibeere iranlọwọ rẹ ranṣẹ si awọn mọlẹbi ti o yan aṣeyọri!");
+        }
+
+        function createNewNote() {
+            document.getElementById('personalNoteInput').value = '';
+            document.getElementById('personalNoteInput').focus();
+        }
+
+        function savePersonalNote() {
+            const text = document.getElementById('personalNoteInput').value.trim();
+            if(!text) { alert("Kọ imọran tabi akọsilẹ rẹ kọkọ."); return; }
+
+            savedNotesData.push({ id: Date.now(), text: text, time: new Date().toLocaleDateString() });
+            saveData();
+            updateSavedNotesUI();
+            document.getElementById('personalNoteInput').value = '';
+            alert("A ti save imọran rẹ pamọ si ẹrọ aṣeyọri!");
+        }
+
+        function updateSavedNotesUI() {
+            const container = document.getElementById('savedNotesList');
+            if(!container) return;
+            if(savedNotesData.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-center">Ko tii si imọran tabi akọsilẹ ti a save.</p>`;
+                return;
+            }
+            let html = '';
+            savedNotesData.forEach((note, idx) => {
+                html += `
+                    <div class="bg-gray-800 p-3 rounded-xl border border-gray-700 space-y-2">
+                        <p class="text-white">${note.text}</p>
+                        <div class="flex justify-between items-center text-[10px] text-gray-400">
+                            <span>${note.time}</span>
+                            <div class="flex gap-2">
+                                <button type="button" onclick="navigator.clipboard.writeText('${note.text}'); alert('A ti copy akọsilẹ yii!');" class="text-yellow-400 hover:underline cursor-pointer"><i class="fa-solid fa-copy"></i> Copy</button>
+                                <button type="button" onclick="openShareModal('${note.text}')" class="text-blue-400 hover:underline cursor-pointer"><i class="fa-solid fa-share"></i> Share</button>
+                                <button type="button" onclick="deleteNote(${idx})" class="text-red-400 hover:underline cursor-pointer"><i class="fa-solid fa-trash"></i> Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function deleteNote(idx) {
+            savedNotesData.splice(idx, 1);
+            saveData();
+            updateSavedNotesUI();
+        }
+
+        function updateEngineDisplayNames() {
+            engine1Data.name = document.getElementById('e1Name').value;
+            engine1Data.target = parseFloat(document.getElementById('e1Target').value) || 0;
+            engine2Data.name = document.getElementById('e2Name').value;
+            engine2Data.target = parseFloat(document.getElementById('e2Target').value) || 0;
+            engine3Data.name = document.getElementById('e3Name').value;
+            engine3Data.target = parseFloat(document.getElementById('e3Target').value) || 0;
+
+            document.getElementById('engine1HeaderBtn').innerHTML = `<i class="fa-solid fa-cogs mr-1.5"></i> 1. ${engine1Data.name} (₦${engine1Data.target.toLocaleString()})`;
+            document.getElementById('engine2HeaderBtn').innerHTML = `<i class="fa-solid fa-cogs mr-1.5"></i> 2. ${engine2Data.name} (₦${engine2Data.target.toLocaleString()})`;
+            document.getElementById('engine3HeaderBtn').innerHTML = `<i class="fa-solid fa-file-invoice-dollar mr-1.5"></i> 3. ${engine3Data.name} (₦${engine3Data.target.toLocaleString()})`;
+
+            document.getElementById('optE1').innerText = `${engine1Data.name} (₦${engine1Data.target.toLocaleString()})`;
+            document.getElementById('optE2').innerText = `${engine2Data.name} (₦${engine2Data.target.toLocaleString()})`;
+            document.getElementById('optE3').innerText = `${engine3Data.name} (₦${engine3Data.target.toLocaleString()})`;
+
+            document.getElementById('dropdownBtnE1').innerHTML = `<i class="fa-solid fa-wallet mr-1.5"></i> ${engine1Data.name} Ledger`;
+            document.getElementById('dropdownBtnE2').innerHTML = `<i class="fa-solid fa-wallet mr-1.5"></i> ${engine2Data.name} Ledger`;
+            document.getElementById('dropdownBtnE3').innerHTML = `<i class="fa-solid fa-file-invoice-dollar mr-1.5"></i> ${engine3Data.name} Ledger`;
+
+            saveData();
+        }
+
+        function assignOfficial(type) {
+            if(type === 'chairman') familyOfficials.chairman = document.getElementById('inputChairman').value.trim() || familyOfficials.chairman;
+            if(type === 'deputy') familyOfficials.deputy = document.getElementById('inputDeputy').value.trim();
+            if(type === 'secretary') familyOfficials.secretary = document.getElementById('inputSecretary').value.trim();
+            if(type === 'treasurer') familyOfficials.treasurer = document.getElementById('inputTreasurer').value.trim();
+            if(type === 'publicist') familyOfficials.publicist = document.getElementById('inputPublicist').value.trim();
+            if(type === 'elder') {
+                let v = document.getElementById('inputElder').value.trim();
+                if(v) {
+                    if(familyOfficials.elders.length >= 50) {
+                        alert("Eto ti gba max 50 agbàgbà tẹlẹ!");
+                        return;
+                    }
+                    familyOfficials.elders.push(v);
+                    document.getElementById('inputElder').value = '';
+                }
+            }
+            saveData();
+            updateMeetingRoomOfficialsUI();
+            updateActiveSpeakersUI();
+            renderControlEldersList();
+            alert("A ti yan oloye na aṣeyọri!");
+        }
+
+        function renderControlEldersList() {
+            const container = document.getElementById('controlEldersListContainer');
+            if(!container) return;
+            if(familyOfficials.elders.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400">Ko tii si agbàgbà ti a fi kun.</p>`;
+                return;
+            }
+            let html = '';
+            familyOfficials.elders.forEach((elderName, idx) => {
+                html += `
+                    <div class="bg-gray-800 p-2 rounded-lg flex justify-between items-center border border-gray-700 text-xs">
+                        <span class="text-white font-bold">${idx + 1}. ${elderName}</span>
+                        <div class="flex gap-1">
+                            <button type="button" onclick="editElder(${idx})" class="bg-blue-600 text-white px-2 py-1 rounded text-[10px] cursor-pointer"><i class="fa-solid fa-pen"></i> Edit</button>
+                            <button type="button" onclick="deleteElder(${idx})" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] cursor-pointer"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function editElder(idx) {
+            let newName = prompt("Kọ orukọ tuntun lati rọpo ẹni ti o ti ku tabi yipada:", familyOfficials.elders[idx]);
+            if(newName && newName.trim() !== '') {
+                familyOfficials.elders[idx] = newName.trim();
+                saveData();
+                updateMeetingRoomOfficialsUI();
+                renderControlEldersList();
+                alert("A ti parọ orukọ na aṣeyọri!");
+            }
+        }
+
+        function deleteElder(idx) {
+            if(confirm("Njẹ o daju pe o fẹ yọ agbàgbà yii kuro?")) {
+                familyOfficials.elders.splice(idx, 1);
+                saveData();
+                updateMeetingRoomOfficialsUI();
+                renderControlEldersList();
+            }
+        }
+
+        function updateMeetingRoomOfficialsUI() {
+            document.getElementById('displayChairman').innerText = familyOfficials.chairman;
+            document.getElementById('displayDeputy').innerText = familyOfficials.deputy || 'Ko tii si';
+            document.getElementById('displaySecretary').innerText = familyOfficials.secretary || 'Ko tii si';
+            document.getElementById('displayTreasurer').innerText = familyOfficials.treasurer || 'Ko tii si';
+            document.getElementById('displayPublicist').innerText = familyOfficials.publicist || 'Ko tii si';
+            document.getElementById('displayEldersList').innerText = familyOfficials.elders.length > 0 ? familyOfficials.elders.join(', ') : "Ko tii si agbàgbà ti a yan.";
+        }
+
+        function updateMeetingMembersDirectoryUI() {
+            const container = document.getElementById('meetingMembersDirectoryList');
+            if(!container) return;
+            let html = '';
+            familyMembersList.forEach((m) => {
+                html += `
+                    <div class="bg-gray-800 p-2 rounded-lg flex justify-between items-center border border-gray-700">
+                        <div>
+                            <span class="text-white block font-bold">${m.name} <span class="text-yellow-400 text-[10px]">(${m.age || 30} yrs)</span></span>
+                            <span class="text-[9px] text-gray-400">Code: ${m.code}</span>
+                        </div>
+                        <span class="text-[10px] text-green-400 bg-green-950/50 px-2 py-0.5 rounded font-bold">Mọlẹbi</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function updateActiveSpeakersUI() {
+            const container = document.getElementById('activeSpeakersRoundContainer');
+            if(!container) return;
+            container.innerHTML = `
+                <div class="w-20 h-20 bg-yellow-500 text-black border-2 border-white rounded-full flex flex-col items-center justify-center text-center p-1 shadow-xl animate-pulse">
+                    <span class="text-[10px] font-extrabold truncate w-full">${familyOfficials.chairman}</span>
+                    <span class="text-[9px] font-bold">Chairman</span>
+                </div>
+                <div class="w-20 h-20 bg-blue-600 text-white border-2 border-yellow-400 rounded-full flex flex-col items-center justify-center text-center p-1 shadow-xl animate-pulse">
+                    <span class="text-[10px] font-bold truncate w-full">${loggedInUsername}</span>
+                    <span class="text-[9px] text-yellow-300">N sọrọ...</span>
+                </div>
+            `;
+        }
+
+        function toggleMyMic() {
+            isMyMicMuted = !isMyMicMuted;
+            const btn = document.getElementById('myMicToggleBtn');
+            if(isMyMicMuted) {
+                btn.className = "bg-red-600 hover:bg-red-500 text-white font-bold py-2 rounded-lg text-xs cursor-pointer shadow";
+                btn.innerHTML = `<i class="fa-solid fa-microphone-slash mr-1"></i> Tan Mic`;
+            } else {
+                btn.className = "bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-lg text-xs cursor-pointer shadow";
+                btn.innerHTML = `<i class="fa-solid fa-microphone mr-1"></i> Pa Mic`;
+            }
+        }
+
+        function toggleRaiseHand() {
+            isHandRaised = !isHandRaised;
+            const btn = document.getElementById('raiseHandBtn');
+            if(isHandRaised) {
+                btn.className = "bg-green-500 hover:bg-green-400 text-black font-bold py-2 rounded-lg text-xs cursor-pointer shadow";
+                btn.innerHTML = `<i class="fa-solid fa-hand mr-1"></i> Kawọ Silẹ`;
+                alert("A ti gbe ọwọ rẹ soke aṣeyọri!");
+            } else {
+                btn.className = "bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 rounded-lg text-xs cursor-pointer shadow";
+                btn.innerHTML = `<i class="fa-solid fa-hand mr-1"></i> Nawọ Soke`;
+                alert("A ti sọ ọwọ rẹ silẹ.");
+            }
+        }
+
+        function startMeetingSession() {
+            isMeetingActive = true;
+            const now = new Date();
+            meetingStartDateStr = now.toLocaleDateString();
+            meetingStartTime = now.toLocaleTimeString();
+            document.getElementById('meetingStatusText').innerHTML = `<span class='text-green-400 font-bold'>Ipade Ẹbi ti bẹrẹ ni: ${meetingStartTime}</span>`;
+            alert("Ipade ẹbi ti bẹrẹ ni osise!");
+        }
+
+        function stopMeetingSession() {
+            isMeetingActive = false;
+            document.getElementById('meetingStatusText').innerHTML = `<span class='text-red-400 font-bold'>A ti dá ipade duro.</span>`;
+            alert("A ti da ipade duro!");
+        }
+
+        async function startRecordMeeting() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                mediaRecorder.ondataavailable = event => { audioChunks.push(event.data); };
+                mediaRecorder.onstop = () => {
+                    recordedAudioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                    recordedAudioUrl = URL.createObjectURL(recordedAudioBlob);
+                    const previewAudio = document.getElementById('liveMeetingAudioPreview');
+                    previewAudio.src = recordedAudioUrl;
+                    previewAudio.classList.remove('hidden');
+                };
+                mediaRecorder.start();
+                if(!isMeetingActive) startMeetingSession();
+                document.getElementById('recordingLiveStatus').innerText = "Ipò Igbaṣẹ: N gbasilẹ lọwọ...";
+                alert("A ti bẹrẹ igbasilẹ ohun ipade!");
+            } catch (err) { alert("Gba laaye lati lo microphone foonu rẹ."); }
+        }
+
+        function stopRecordMeeting() {
+            if(mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                document.getElementById('recordingLiveStatus').innerText = "Ipò Igbaṣẹ: A ti pari igbasilẹ na.";
+                alert("A ti pari igbasilẹ ohun ipade na.");
+            } else { alert("Ko tii si igbasilẹ ti o n lọ."); }
+        }
+
+        function playPauseMeetingAudio() {
+            if(!recordedAudioUrl) { alert("Ko tii si ohun ipade ti a gba lẹẹkan."); return; }
+            if(!playbackAudioElement) playbackAudioElement = new Audio(recordedAudioUrl);
+            if(playbackAudioElement.paused) { playbackAudioElement.play(); } else { playbackAudioElement.pause(); }
+        }
+
+        function stopPlayMeetingAudio() {
+            if(playbackAudioElement) { playbackAudioElement.pause(); playbackAudioElement.currentTime = 0; }
+        }
+
+        function sendRecordingToFyp() {
+            if(!recordedAudioUrl) { alert("Ko tii si ohun ipade ti a gba."); return; }
+            const caption = `Ipade Ẹbi Ọbọọgun - (${meetingStartDateStr} ${meetingStartTime})`;
+            const postId = 'meeting-' + Date.now();
+            postsComments[postId] = [];
+
+            fypAllPosts.unshift({ id: postId, user: loggedInUsername, caption: caption, textContent: 'Ohùn Ipade Ẹbi', isVideo: true, url: recordedAudioUrl, likes: 0, commentsCount: 0 });
+            renderFypFeed();
+            saveData();
+            alert("A ti gbe ohun ipade sori FYP aṣeyọri!");
+            closeDashboards();
+        }
+
+        function saveToSecretaryBag() {
+            if(!recordedAudioUrl) { alert("Ko tii si ohun ipade ti a gba."); return; }
+            secretaryBagData.push({
+                id: Date.now(),
+                date: meetingStartDateStr || new Date().toLocaleDateString(),
+                time: meetingStartTime || new Date().toLocaleTimeString(),
+                audioUrl: recordedAudioUrl,
+                title: `Ipade Ọbọọgun - ${meetingStartDateStr || 'Ojo Oni'}`
+            });
+            saveData();
+            updateSecretaryBagUI();
+            alert("A ti fi ohun ipade na pamọ si Bag Akọwe!");
+        }
+
+        function updateSecretaryBagUI() {
+            const container = document.getElementById('secretaryBagContainer');
+            if(!container) return;
+            if(secretaryBagData.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center">Bag akọwe ko tii ni igbasilẹ kankan.</p>`;
+                return;
+            }
+            let html = '';
+            secretaryBagData.forEach((item, idx) => {
+                html += `
+                    <div class="bg-gray-800 p-3 rounded-xl border border-gray-700 space-y-2">
+                        <div class="flex justify-between items-center text-[11px]">
+                            <span class="text-yellow-400 font-bold">${item.title}</span>
+                            <span class="text-gray-400">${item.date}</span>
+                        </div>
+                        <audio src="${item.audioUrl}" controls class="w-full h-8"></audio>
+                        <button type="button" onclick="deleteSecretaryBagItem(${idx})" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-1 rounded text-[10px] cursor-pointer">Pa Ẹri Yi Kuro</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function deleteSecretaryBagItem(idx) {
+            secretaryBagData.splice(idx, 1);
+            saveData();
+            updateSecretaryBagUI();
+        }
+
+        function openLiveCameraModal() { document.getElementById('liveCameraModal').classList.remove('hidden'); }
+        function closeLiveCameraModal() {
+            if(receiptStream) receiptStream.getTracks().forEach(t => t.stop());
+            document.getElementById('liveCameraModal').classList.add('hidden');
+        }
+
+        async function startReceiptCamera() {
+            try {
+                receiptStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                document.getElementById('receiptVideoElem').srcObject = receiptStream;
+            } catch (err) { alert("Ko le tan kamẹra iwe-ẹri."); }
+        }
+
+        function captureAndVerifyReceipt() {
+            const video = document.getElementById('receiptVideoElem');
+            const canvas = document.getElementById('receiptCanvasElem');
+            canvas.width = video.videoWidth || 300;
+            canvas.height = video.videoHeight || 300;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            uploadedReceiptObjectUrl = canvas.toDataURL('image/png');
+            closeLiveCameraModal();
+            document.getElementById('receiptStatusMsg').innerHTML = `<span class='text-green-400 font-bold'>📸 A ti ya fọto Live Camera iwe-ẹri! Tẹ Preview latiwo.</span>`;
+            alert("A ti ya iwe-ẹri isanwo nipasẹ Live Camera aṣeyọri!");
+        }
+
+        function handleReceiptUpload(event) {
+            const file = event.target.files[0];
+            if(file) {
+                uploadedReceiptObjectUrl = URL.createObjectURL(file);
+                document.getElementById('receiptStatusMsg').innerHTML = `<span class='text-green-400 font-bold'>📁 A ti gbe iwe-ẹri wọle lati Gallery! Tẹ Preview latiwo.</span>`;
+                alert("A ti gbe iwe-ẹri isanwo wọle lati Gallery aṣeyọri!");
+            }
+        }
+
+        function previewReceiptImage() {
+            const container = document.getElementById('receiptPreviewContentContainer');
+            if(!uploadedReceiptObjectUrl) {
+                container.innerHTML = `<p class="text-xs text-red-400">Ko tii si iwe-ẹri isanwo ti a gbe wọle tabi ya!</p>`;
+            } else {
+                container.innerHTML = `<img src="${uploadedReceiptObjectUrl}" class="w-full h-full object-contain rounded-lg">`;
+            }
+            document.getElementById('receiptPreviewModal').classList.remove('hidden');
+        }
+
+        function closeReceiptPreviewModal() {
+            document.getElementById('receiptPreviewModal').classList.add('hidden');
+        }
+
+        function verifyAndSubmitReceipt() {
+            const engineNum = parseInt(document.getElementById('memberTargetEngine').value);
+            const amt = parseFloat(document.getElementById('memberPaidAmount').value) || 0;
+            const txnId = document.getElementById('memberTransactionId').value.trim();
+            const statusMsg = document.getElementById('receiptStatusMsg');
+            let targetEngine = engineNum === 1 ? engine1Data : (engineNum === 2 ? engine2Data : engine3Data);
+
+            if(amt <= 0) { alert("Jọwọ tẹ iye owo ti o san."); return; }
+            if(!txnId) { alert("Jọwọ tẹ Transaction ID ti iwe-ẹri isanwo rẹ."); return; }
+            if(!uploadedReceiptObjectUrl) { alert("Jọwọ upload iwe-ẹri isanwo tabi ya a nipasẹ Live Camera kọkọ."); return; }
+
+            statusMsg.innerHTML = `<span class='text-yellow-400 font-bold animate-pulse'>⏳ Background Money Engine n verify Transaction ID (${txnId}) pẹlu Bank Account...</span>`;
+            
+            setTimeout(() => {
+                let allLedgers = [...engine1Data.ledger, ...engine2Data.ledger, ...engine3Data.ledger];
+                let isDuplicate = allLedgers.some(item => item.txnId === txnId);
+
+                if(isDuplicate) {
+                    statusMsg.innerHTML = `<span class='text-red-400 font-bold'>❌ Ìkìlọ̀: Transaction ID yii ti kọja tẹlẹ! Ko le lo lẹmeji.</span>`;
+                    alert("Ìkìlọ̀: Transaction ID yii ti wọle tẹlẹ ninu bọọdu isanwo!");
+                    return;
+                }
+
+                targetEngine.ledger.push({
+                    user: loggedInUsername,
+                    code: loggedInPaymentCode,
+                    amount: amt,
+                    txnId: txnId,
+                    receiptUrl: uploadedReceiptObjectUrl,
+                    date: new Date().toLocaleDateString()
+                });
+
+                saveData();
+                updateEngineTotalsUI();
+                statusMsg.innerHTML = `<span class='text-green-400 font-bold'>✅ A fọwọsi isanwo na aṣeyọri! Owo wọle si Ledger.</span>`;
+                alert(`✅ Background Money Engine tifọwọsi isanwo rẹ! Owo: ₦${amt.toLocaleString()} ti wọle si ${targetEngine.name}.`);
+                
+                document.getElementById('memberPaidAmount').value = '';
+                document.getElementById('memberTransactionId').value = '';
+                uploadedReceiptObjectUrl = null;
+            }, 1500);
+        }
+
+        function updateEngineTotalsUI() {
+            let e1Sum = engine1Data.ledger.reduce((acc, curr) => acc + curr.amount, 0);
+            let e2Sum = engine2Data.ledger.reduce((acc, curr) => acc + curr.amount, 0);
+            let e3Sum = engine3Data.ledger.reduce((acc, curr) => curr.amount, 0);
+            let e3WithSum = engine3Data.withdrawals ? engine3Data.withdrawals.reduce((acc, curr) => acc + curr.amount, 0) : 0;
+
+            document.getElementById('e1Total').innerText = `₦${e1Sum.toLocaleString()}`;
+            document.getElementById('e2Total').innerText = `₦${e2Sum.toLocaleString()}`;
+            document.getElementById('e3Total').innerText = `₦${e3Sum.toLocaleString()}`;
+            document.getElementById('e3Balance').innerText = `₦${(e3Sum - e3WithSum).toLocaleString()}`;
+        }
+
+        function resetEngine(num) {
+            if(confirm("Njẹ o daju pe o fẹ fopin si ajọ yii?")) {
+                if(num === 1) engine1Data.ledger = [];
+                if(num === 2) engine2Data.ledger = [];
+                if(num === 3) { engine3Data.ledger = []; engine3Data.withdrawals = []; }
+                saveData();
+                updateEngineTotalsUI();
+            }
+        }
+
+        function restartEngine(num) { alert(`A ti bẹrẹ sà tuntun fun Engine ${num}!`); }
+
+        function toggleEngineCard(num) {
+            const content = document.getElementById(`engine${num}Content`);
+            const icon = document.getElementById(`engine${num}Icon`);
+            if(content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.innerHTML = `<i class="fa-solid fa-chevron-up"></i> (Paramọ)`;
+            } else {
+                content.classList.add('hidden');
+                icon.innerHTML = `<i class="fa-solid fa-chevron-down"></i> (Ṣii)`;
+            }
+        }
+
+        function openEngineLedgerModal(num) {
+            let engine = num === 1 ? engine1Data : (num === 2 ? engine2Data : engine3Data);
+            document.getElementById('modalLedgerTitle').innerText = `${engine.name} Ledger`;
+            const container = document.getElementById('modalLedgerListContainer');
+            let html = '';
+
+            if(engine.ledger.length === 0) {
+                html = `<p class="text-gray-400 text-center py-4">Ko tii si eniyan ti o ti san owo kankan.</p>`;
+            } else {
+                engine.ledger.forEach((item) => {
+                    html += `
+                        <div class="bg-gray-800 p-2.5 rounded-lg flex justify-between items-center border border-gray-700">
+                            <div>
+                                <span class="text-white font-semibold block">${item.user}</span>
+                                <span class="text-[10px] text-yellow-400">Code: ${item.code} | TXN: ${item.txnId || 'N/A'}</span>
+                            </div>
+                            <span class="text-yellow-400 font-bold">₦${item.amount.toLocaleString()} <span class="text-[9px] text-gray-400 block">(${item.date})</span></span>
+                        </div>
+                    `;
+                });
+            }
+            container.innerHTML = html;
+            document.getElementById('engineLedgerModal').classList.remove('hidden');
+            closeMeetingDropdown();
+        }
+
+        function closeEngineLedgerModal() { document.getElementById('engineLedgerModal').classList.add('hidden'); }
+
+        function openUploadModal() { document.getElementById('uploadModal').classList.remove('hidden'); }
+        function closeUploadModal() { document.getElementById('uploadModal').classList.add('hidden'); }
+
+        function showSlidePlayPauseBtn(postId) {
+            const btn = document.getElementById(`playpause-btn-${postId}`);
+            if(!btn) return;
+            btn.classList.remove('hidden');
+            if(playPauseHideTimeouts[postId]) clearTimeout(playPauseHideTimeouts[postId]);
+            playPauseHideTimeouts[postId] = setTimeout(() => {
+                btn.classList.add('hidden');
+            }, 1000);
+        }
+
+        function togglePostPlayPause(postId) {
+            const slide = document.querySelector(`[data-post-id="${postId}"]`);
+            if(!slide) return;
+            const video = slide.querySelector('video');
+            const icon = document.getElementById(`playpause-icon-${postId}`);
+            if(video) {
+                if(video.paused) {
+                    video.play();
+                    icon.className = "fa-solid fa-pause";
+                } else {
+                    video.pause();
+                    icon.className = "fa-solid fa-play";
+                }
+            } else {
+                alert("Bọtini Play/Pause n ṣiṣẹ lori awọn fidio FYP.");
+            }
+        }
+
+        function publishToFyp() {
+            const fileInput = document.getElementById('mediaFileInput');
+            const captionInput = document.getElementById('mediaCaptionInput');
+            if(fileInput.files.length === 0) { alert("Yan fidio tabi aworan kọkọ."); return; }
+
+            const file = fileInput.files[0];
+            const caption = captionInput.value || "Global Connect Hub!";
+            const fileURL = URL.createObjectURL(file);
+            const isVideo = file.type.startsWith('video');
+            const postId = 'post-' + Date.now();
+            postsComments[postId] = [];
+
+            fypAllPosts.unshift({
+                id: postId,
+                user: loggedInUsername,
+                caption: caption,
+                textContent: '',
+                isVideo: isVideo,
+                url: fileURL,
+                likes: 0,
+                commentsCount: 0
+            });
+
+            renderFypFeed();
+            closeUploadModal();
+            fileInput.value = ""; captionInput.value = "";
+            alert("A ti gbe e sori FYP pẹlu aṣeyọri fun gbogbo mọlẹbi ati iyawo ile!");
+            closeDashboards();
+        }
+
+        function renderFypFeed() {
+            const feedContainer = document.getElementById('fypFeedContainer');
+            if(!feedContainer) return;
+            let html = '';
+            fypAllPosts.forEach(post => {
+                let mediaHTML = '';
+                if(post.isVideo && post.url) {
+                    mediaHTML = `<video src="${post.url}" loop playsinline class="fyvideo w-full h-full object-cover"></video>`;
+                } else if(!post.isVideo && post.url) {
+                    mediaHTML = `<img src="${post.url}" class="w-full h-full object-cover">`;
+                } else {
+                    mediaHTML = `<div class="text-yellow-400 font-bold text-base text-center p-6 bg-gradient-to-t from-gray-900 to-black w-full h-full flex items-center justify-center">${post.textContent}</div>`;
+                }
+
+                html += `
+                    <div class="tiktok-slide flex flex-col justify-end relative bg-black group" data-post-id="${post.id}" onmousemove="showSlidePlayPauseBtn('${post.id}')" ontouchstart="showSlidePlayPauseBtn('${post.id}')">
+                        <div class="absolute inset-0 flex items-center justify-center bg-black">
+                            ${mediaHTML}
+                        </div>
+                        <button type="button" id="playpause-btn-${post.id}" onclick="togglePostPlayPause('${post.id}')" class="hidden absolute inset-0 m-auto w-16 h-16 bg-black/60 rounded-full text-yellow-400 text-2xl flex items-center justify-center z-30 transition cursor-pointer">
+                            <i class="fa-solid fa-play" id="playpause-icon-${post.id}"></i>
+                        </button>
+                        <div class="absolute right-4 bottom-24 flex flex-col items-center space-y-4 z-20">
+                            <button type="button" onclick="openUserProfile('${post.user}')" class="w-11 h-11 bg-yellow-500 rounded-full border-2 border-white flex items-center justify-center text-black font-extrabold shadow-xl cursor-pointer">${post.user.charAt(0)}</button>
+                            <button type="button" onclick="likePost('${post.id}', this)" class="bg-gray-800/80 p-3.5 rounded-full text-white hover:bg-red-500 shadow-xl cursor-pointer flex flex-col items-center"><i class="fa-solid fa-heart text-xl"></i><span id="like-count-${post.id}" class="text-[10px] font-bold mt-0.5">${post.likes || 0}</span></button>
+                            <button type="button" onclick="openCommentModal('${post.id}')" class="bg-gray-800/80 p-3.5 rounded-full text-white hover:bg-blue-500 shadow-xl cursor-pointer flex flex-col items-center"><i class="fa-solid fa-comment text-xl"></i><span id="comm-count-${post.id}" class="text-[10px] font-bold mt-0.5">${postsComments[post.id] ? postsComments[post.id].length : 0}</span></button>
+                            <button type="button" onclick="openShareModal('${post.caption}')" class="bg-gray-800/80 p-3.5 rounded-full text-white hover:bg-purple-500 shadow-xl cursor-pointer"><i class="fa-solid fa-share text-xl"></i></button>
+                            <button type="button" onclick="savePostToGallery('${post.id}')" class="bg-gray-800/80 p-3.5 rounded-full text-white hover:bg-green-500 shadow-xl cursor-pointer"><i class="fa-solid fa-download text-xl"></i></button>
+                        </div>
+                        <div class="relative z-20 p-4 bg-gradient-to-t from-black via-black/70 to-transparent pb-6">
+                            <h4 onclick="openUserProfile('${post.user}')" class="font-bold text-white text-base cursor-pointer hover:underline">@${post.user}</h4>
+                            <p class="text-xs text-gray-200 mt-1">${post.caption}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            feedContainer.innerHTML = html;
+            initVideoObserver();
+        }
+
+        function handleFypScroll() {
+            const fypScreen = document.getElementById('fypScreen');
+            if(!fypScreen) return;
+            let currentScrollIndex = Math.round(fypScreen.scrollTop / fypScreen.clientHeight);
+            if(currentScrollIndex > viewedPostsCount) {
+                viewedPostsCount = currentScrollIndex;
+                if(viewedPostsCount > 0 && viewedPostsCount % 10 === 0) {
+                    triggerFypAdModal();
+                }
+            }
+        }
+
+        function triggerFypAdModal() {
+            const modal = document.getElementById('regAdsModal');
+            modal.classList.remove('hidden');
+            document.getElementById('adModalTitle').innerText = "📢 Ipolowo FYP Pataki (Lẹhin Fidio / Aworan 10)";
+            const btn = document.getElementById('nextAdBtn');
+            const timerText = document.getElementById('regAdTimerText');
+            btn.disabled = true;
+            btn.className = "w-full bg-gray-700 text-gray-400 font-bold p-2.5 rounded-lg text-xs cursor-not-allowed";
+            btn.innerText = "Jọwọ Duro...";
+
+            let countdown = 5;
+            timerText.innerText = `Ipolowo n ṣiṣẹ lọwọ... (${countdown}s)`;
+
+            const timer = setInterval(() => {
+                countdown--;
+                if(countdown > 0) {
+                    timerText.innerText = `Ipolowo n ṣiṣẹ lọwọ... (${countdown}s)`;
+                } else {
+                    clearInterval(timer);
+                    timerText.innerText = `Ipolowo ti pari aṣeyọri!`;
+                    btn.disabled = false;
+                    btn.className = "w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-2.5 rounded-lg text-xs cursor-pointer shadow";
+                    btn.innerText = "Tẹ lati Pada si FYP";
+                    btn.onclick = () => {
+                        modal.classList.add('hidden');
+                    };
+                }
+            }, 1000);
+        }
+
+        function likePost(postId, btn) {
+            btn.classList.toggle('text-red-500');
+            const countElem = document.getElementById(`like-count-${postId}`);
+            let post = fypAllPosts.find(p => p.id === postId);
+            if(post) {
+                if(btn.classList.contains('text-red-500')) {
+                    post.likes = (post.likes || 0) + 1;
+                } else {
+                    post.likes = Math.max(0, (post.likes || 0) - 1);
+                }
+                countElem.innerText = post.likes;
+                saveData();
+            }
+        }
+
+        function savePostToGallery(postId) {
+            alert("A ti save fidio/aworan yii sinu foonu gallery rẹ aṣeyọri!");
+        }
+
+        function openCommentModal(postId) {
+            currentActivePostId = postId;
+            renderComments();
+            document.getElementById('commentModal').classList.remove('hidden');
+        }
+
+        function closeCommentModal() { document.getElementById('commentModal').classList.add('hidden'); }
+
+        function renderComments() {
+            const container = document.getElementById('commentsListContainer');
+            const comments = postsComments[currentActivePostId] || [];
+            document.getElementById(`comm-count-${currentActivePostId}`).innerText = comments.length;
+            if(comments.length === 0) { container.innerHTML = `<p class="text-gray-400 text-center py-4">Ko tii si asọye.</p>`; return; }
+            let html = '';
+            comments.forEach((c) => {
+                html += `
+                    <div class="bg-gray-800 p-2.5 rounded-lg space-y-1">
+                        <div class="flex justify-between items-center">
+                            <span class="text-yellow-400 font-bold">${c.user}</span>
+                        </div>
+                        <p class="text-gray-200">${c.text}</p>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function sendComment() {
+            const input = document.getElementById('commentInputText');
+            if(!input.value.trim()) return;
+            if(!postsComments[currentActivePostId]) postsComments[currentActivePostId] = [];
+            postsComments[currentActivePostId].push({ user: loggedInUsername, text: input.value.trim() });
+            input.value = '';
+            renderComments();
+            saveData();
+        }
+
+        function initVideoObserver() {
+            if (fypVideoObserver) {
+                fypVideoObserver.disconnect();
+            }
+            const slides = document.querySelectorAll('.tiktok-slide');
+            fypVideoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target.querySelector('video');
+                    if (video) {
+                        if (entry.isIntersecting) {
+                            video.play().catch(e => console.log(e));
+                            video.muted = false;
+                        } else {
+                            video.pause();
+                            video.muted = true;
+                        }
+                    }
+                });
+            }, { threshold: 0.6 });
+            slides.forEach(slide => fypVideoObserver.observe(slide));
+        }
+
+        function pauseAllVideos() { document.querySelectorAll('video').forEach(v => { v.pause(); v.muted = true; }); }
+    </script>
+</body>
+</html>
